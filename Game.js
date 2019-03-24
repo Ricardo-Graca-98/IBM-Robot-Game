@@ -4,7 +4,6 @@ var fs = require('fs');
 //const simpleGit = require('simple-git'); WORKING ON THIS
 
 //Authentication into the Personality Insight API
-
 var personalityInsights = new PersonalityInsightsV3({
   version: '2019-03-22',
   iam_apikey: 'YMpOWrKJysOg9xdNt3HNIcpnVqZHve-_VaVKkq4cokxi',
@@ -12,7 +11,6 @@ var personalityInsights = new PersonalityInsightsV3({
 });
 
 //Authentication into Twitter
-
 var client = new Twitter({
   consumer_key: 'PX8hDcf9YHAKqXII5TdhlHMVw',
   consumer_secret: 'FFb7qceLkOXSa0GnLMgzItSeIYsmpckxToTZe0jUHPVMRNeWPV',
@@ -23,8 +21,15 @@ var client = new Twitter({
 var text = "";
 var outputText = "";
 
-//Get tweets from user timeline
-client.get('statuses/user_timeline', {screen_name: 'DisturbedBoy69', count: '100', include_rts: 'false'} , function(error, tweets, response)
+//Create question template
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+
+readline.question(`What's your twitter ID?`, (ID) => {
+  //Get tweets from user timeline
+client.get('statuses/user_timeline', {screen_name: ID, count: '100', include_rts: 'false'} , function(error, tweets, response)
 {
     //Make them json
     var data = JSON.stringify(tweets, null, 2);
@@ -36,6 +41,7 @@ client.get('statuses/user_timeline', {screen_name: 'DisturbedBoy69', count: '100
     {
         text =  profileText[i].text;
         text = text.replace(/(\r\n|\n|\r)/gm," ");
+        text = text.replace(/"/g, '');
         
         outputText += "{\n\t\"content\":\"" + text + "\",\n\t\"contenttype\": \"text/plain\",\n\t\"created\":" + 0 + ",\n\t\"id\":\"" + profileText[i].id + "\",\n\t\"language\":\"en\"\n}";
         
@@ -52,6 +58,7 @@ client.get('statuses/user_timeline', {screen_name: 'DisturbedBoy69', count: '100
         content_type: 'application/json',
         consumption_preferences: 'true'
     };
+    //Gets the information from the Personality Insight tool belonging to the Watson AI
     personalityInsights.profile(profileParams, function(error, profile) {
         if (error) 
         {
@@ -59,9 +66,17 @@ client.get('statuses/user_timeline', {screen_name: 'DisturbedBoy69', count: '100
         } 
         else 
         { 
-            fs.writeFileSync('./outputUnity.json', JSON.stringify(profile, null, 2));
+            var filtered = "";
+            for(var i = 0; i < profile.personality.length; i++)
+                {
+                    console.log(profile.personality[i].name + " " + profile.personality[i].percentile + "\n");
+                    filtered += profile.personality[i].name + " " + profile.personality[i].percentile + "\n";
+                }
+            fs.writeFileSync('./outputUnity.txt', filtered);
+            fs.writeFileSync('./outputRawUnity.json', JSON.stringify(profile, null, 2));
         }
     });
     //simpleGit.commit('origin', 'master'); WORKING ON THIS
 })
-
+  readline.close()
+})
