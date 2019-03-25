@@ -1,7 +1,6 @@
 var PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights/v3');
 var Twitter = require('twitter');
 var fs = require('fs');
-//const simpleGit = require('simple-git'); WORKING ON THIS
 
 //Authentication into the Personality Insight API
 var personalityInsights = new PersonalityInsightsV3({
@@ -76,7 +75,6 @@ client.get('statuses/user_timeline', {screen_name: ID, count: '100', include_rts
             fs.writeFileSync('./outputRawUnity.json', JSON.stringify(profile, null, 2));
         }
     });
-    //simpleGit.commit('origin', 'master'); WORKING ON THIS
 })
   readline.close()
 })
