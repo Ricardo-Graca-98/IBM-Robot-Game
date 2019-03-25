@@ -1,7 +1,16 @@
 var http = require('http');
+var fs = require('fs');
 
-//create a server object:
 http.createServer(function (req, res) {
-  res.write('Hello World!'); //write a response to the client
-  res.end(); //end the response
-}).listen(5000); //the server object listens on port 8080 
+    console.log(req.url);
+    for(var i = 0; i < req.url.length; i++)
+    {
+        console.log(req.url[i]);
+    }
+    fs.appendFile('data.txt', req.url + "\n", function (err) {
+    if (err)
+    {
+        throw err;
+    }
+});
+}).listen(5000); 
