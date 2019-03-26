@@ -1,6 +1,7 @@
 var PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights/v3');
 var Twitter = require('twitter');
 var fs = require('fs');
+var rimraf = require("rimraf");
 
 //Authentication into the Personality Insight API
 var personalityInsights = new PersonalityInsightsV3({
@@ -50,10 +51,16 @@ client.get('statuses/user_timeline', {screen_name: ID, count: '100', include_rts
             }
     }
     outputText += "]}";
-    fs.writeFileSync('./profile.json', outputText);
+    
+    if (!fs.existsSync('./Users/' + ID))
+    {
+        fs.mkdirSync('./Users/' + ID);
+    }
+    
+    fs.writeFileSync('./Users/' + ID + '/profile.json', outputText);
     var profileParams = {
         // Get the content from the JSON file.
-        content: require('./profile.json'),
+        content: require('./Users/' + ID + '/profile.json'),
         content_type: 'application/json',
         consumption_preferences: 'true'
     };
@@ -61,7 +68,10 @@ client.get('statuses/user_timeline', {screen_name: ID, count: '100', include_rts
     personalityInsights.profile(profileParams, function(error, profile) {
         if (error) 
         {
-            console.log(error);
+            console.log("FAILED! Error code - " + error.code);
+            console.log("Deleting profile...");
+            rimraf.sync('./Users/' + ID);
+            console.log("Profile deleted!");
         } 
         else 
         { 
@@ -71,8 +81,8 @@ client.get('statuses/user_timeline', {screen_name: ID, count: '100', include_rts
                     console.log(profile.personality[i].name + " " + profile.personality[i].percentile + "\n");
                     filtered += profile.personality[i].name + " " + profile.personality[i].percentile + "\n";
                 }
-            fs.writeFileSync('./outputUnity.txt', filtered);
-            fs.writeFileSync('./outputRawUnity.json', JSON.stringify(profile, null, 2));
+            fs.writeFileSync('./Users/' + ID + '/outputUnity.txt', filtered);
+            fs.writeFileSync('./Users/' + ID + '/outputRawUnity.json', JSON.stringify(profile, null, 2));
         }
     });
 })
