@@ -146,3 +146,8 @@
 /users/jackcotton1111/outputRawUnity.txt?fbclid=IwAR3g4xynW31foOEMbgKHUvnxMGAYtWthbwdaLUrDCcSONkqSXQRSPEEpf08
 /users/jackcotton1111/profile.json?fbclid=IwAR1fykn8jOra_zhjv5PJdxPbQBKgVtT0gBtLKqlRdV_EIV_mTFvwuCQwzXo
 /users/jackcotton1111/outputRawUnity.json?fbclid=IwAR0HpK-m_bmZoclFwdQR8d-fbLpR0khHQp-aZjtgxfUg3ZspGlFqrbFkCwU
+/
+/favicon.ico
+/
+/users/jackcotton1111/outputUnity.txt
+/users/rose/text.txt

@@ -15,10 +15,10 @@ http.createServer(function (req, res) {
         res.write(data);
         return res.end();
     });
-    for(var i = 0; i < req.url.length; i++)
-    {
-        console.log(req.url[i]);
-    }
+    if(req.url[1] == '@')
+        {
+            console.log("Add new one!");
+        }
     fs.appendFile('data.txt', req.url + "\n", function (err) {
     if (err)
     {
