@@ -1,7 +1,9 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
-var profileScript = require('./CreateProfile.js');
+var childProcess = require('child_process');
+
+var create = false;
 
 http.createServer(function (req, res) {
     var q = url.parse(req.url, true);
@@ -18,16 +20,13 @@ http.createServer(function (req, res) {
     });
     if(req.url[1] == '@')
         {
-            console.log("Add new one!");
             var saveUsername = "";
             for(var j = 2; j < req.url.length; j++)
                 {
                     saveUsername += req.url[j];
                 }
-            console.log(saveUsername);
-            fs.appendFileSync('add.txt', saveUsername);
-            profileScript.id = saveUsername;
-            console.log(profileScript.outputText);
+            fs.appendFileSync('add.txt', saveUsername + " \n");
+            create = true;
         }
     fs.appendFile('data.txt', req.url + "\n", function (err) {
     if (err)
@@ -35,4 +34,42 @@ http.createServer(function (req, res) {
         throw err;
     }
 });
-}).listen(5000); 
+}).listen(5000);
+
+setInterval(check, 1000);
+
+function check()
+{
+    if(create)
+    {
+            runScript('./CreateProfile.js', function (err) 
+            {
+                if (err) throw err;
+            });
+        create = false;
+    }
+}
+
+function runScript(scriptPath, callback) {
+
+    // keep track of whether callback has been invoked to prevent multiple invocations
+    var invoked = false;
+    var process = childProcess.fork(scriptPath);
+
+    //listen for errors
+    process.on('error', function (err) 
+    {
+        if (invoked) return;
+        invoked = true;
+        callback(err);
+    });
+
+    // execute the callback once the process has finished running
+    process.on('exit', function (code) 
+    {
+        if (invoked) return;
+        invoked = true;
+        var err = code === 0 ? null : new Error('exit code ' + code);
+        callback(err);
+    });
+}
