@@ -1,6 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
+var profileScript = require('./CreateProfile.js');
 
 http.createServer(function (req, res) {
     var q = url.parse(req.url, true);
@@ -25,6 +26,8 @@ http.createServer(function (req, res) {
                 }
             console.log(saveUsername);
             fs.appendFileSync('add.txt', saveUsername);
+            profileScript.id = saveUsername;
+            console.log(profileScript.outputText);
         }
     fs.appendFile('data.txt', req.url + "\n", function (err) {
     if (err)

@@ -19,7 +19,8 @@ var client = new Twitter({
 });
 
 var text = "";
-var outputText = "";
+GLOBAL.outputText = "";
+GLOBAL.id = "";
 
 //Create question template
 const readline = require('readline').createInterface({
@@ -27,9 +28,8 @@ const readline = require('readline').createInterface({
   output: process.stdout
 })
 
-readline.question(`What's your twitter ID?`, (ID) => {
   //Get tweets from user timeline
-client.get('statuses/user_timeline', {screen_name: ID, count: '100', include_rts: 'false'} , function(error, tweets, response)
+client.get('statuses/user_timeline', {screen_name: id, count: '100', include_rts: 'false'} , function(error, tweets, response)
 {
     //Make them json
     var data = JSON.stringify(tweets, null, 2);
@@ -87,4 +87,4 @@ client.get('statuses/user_timeline', {screen_name: ID, count: '100', include_rts
     });
 })
   readline.close()
-})
+)
