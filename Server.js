@@ -18,7 +18,7 @@ http.createServer(function (req, res) {
     if(req.url[1] == '@')
         {
             console.log("Add new one!");
-            var saveUsername;
+            var saveUsername = "";
             for(var j = 2; j < req.url.length; j++)
                 {
                     saveUsername += req.url[j];
