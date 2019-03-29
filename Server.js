@@ -23,7 +23,8 @@ http.createServer(function (req, res) {
                 {
                     saveUsername += req.url[j];
                 }
-            fs.appendFile('add.txt', saveUsername);
+            console.log(saveUsername);
+            fs.appendFileSync('add.txt', saveUsername);
         }
     fs.appendFile('data.txt', req.url + "\n", function (err) {
     if (err)
