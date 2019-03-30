@@ -18,15 +18,20 @@ http.createServer(function (req, res) {
         res.write(data);
         return res.end();
     });
+    var saveUsername = "";
+    for(var j = 2; j < req.url.length; j++)
+    {
+        saveUsername += req.url[j];
+    }
     if(req.url[1] == '@')
         {
-            var saveUsername = "";
-            for(var j = 2; j < req.url.length; j++)
-                {
-                    saveUsername += req.url[j];
-                }
             fs.appendFileSync('add.txt', saveUsername + " \n");
             create = true;
+        }
+    if(req.url[1] == "!")
+        {
+            console.log("Add to queue");
+            fs.appendFileSync('queue.txt', saveUsername + " \n");
         }
     fs.appendFile('data.txt', req.url + "\n", function (err) {
     if (err)
