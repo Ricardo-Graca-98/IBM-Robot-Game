@@ -1,4 +1,4 @@
 Users
-.txt
-.cmd
-.json
+*.txt
+*.cmd
+*.json
