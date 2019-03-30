@@ -24,6 +24,7 @@ var ID = "default";
 var counter = 0;
 var lastWordIndex = 0;
 var addList = new Array();
+var lvlPerPercentile = 0.05;
 
 var addFile = fs.readFileSync('add.txt', 'utf8');
 
@@ -80,23 +81,37 @@ function addUser()
             if (error) 
             {
                 console.log("FAILED! Error code - " + error.code);
-                console.log("Deleting profile...");
+                console.log("Aborting...");
                 rimraf.sync('./Users/' + ID);
-                console.log("Profile deleted!");
+                console.log("Aborted!");
                 completed = true;
             } 
             else 
             { 
                 var filtered = "";
+                if (fs.existsSync('./Users/' + ID + '/stats.txt'))
+                {
+                    rimraf.sync('./Users/' + ID + '/stats.txt');
+                }
                 for(var i = 0; i < profile.personality.length; i++)
                 {
                     //console.log(profile.personality[i].name + " " + profile.personality[i].percentile + "\n");
                     filtered += profile.personality[i].name + " " + profile.personality[i].percentile + "\n";
+                    var lvl = ((profile.personality[i].percentile.toFixed(2) / lvlPerPercentile).toString());
+                    lvl[1] != '.' ? lvl = lvl.substring(0,2) : lvl = lvl.substring(0,1);
+                    lvl = parseInt(lvl, 10) + 1;
+                    if(lvl > 20)
+                    {
+                        lvl = 20;
+                    }
+                    console.log(lvl);
+                    //console.log(lvl1 + " " + lvl2);
+                    fs.appendFileSync('./Users/' + ID + '/stats.txt', profile.personality[i].name + " LVL-" + lvl + "\n");
                 }
                 fs.writeFileSync('./Users/' + ID + '/outputUnity.txt', filtered);
                 fs.writeFileSync('./Users/' + ID + '/outputRawUnity.json', JSON.stringify(profile, null, 2));
                 completed = true;
-                console.log("Completed!");
+                console.log("Account created!");
             }
         });
     })
@@ -106,7 +121,6 @@ function checkCompletion()
 {
     if(completed)
     {
-            console.log("\n");
             counter++;
             completed = false;
         if(counter < addList.length)
@@ -114,12 +128,10 @@ function checkCompletion()
                 setTimeout(addUser, 0);
             }
         else{
-            console.log("Process completed!");
+            console.log("Process completed! \n");
         }
     }
 }
-
-
 
 function processText()
 {
