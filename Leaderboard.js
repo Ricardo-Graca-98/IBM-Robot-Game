@@ -18,10 +18,8 @@ function update()
                 if(data[i] == 'L' && data[i+1] == 'V')
                     {
                         lvl += data[i+4];
-                        if(data[i+4] != '\n')
-                            {
-                                lvl += data[i+5];
-                            }
+                        lvl += data[i+5];
+                        lvl = lvl.trim();
                         switch(lvlCounter)
                             {
                                 case 0:
@@ -40,14 +38,50 @@ function update()
                                     players[counter].emotionalRange = lvl;
                                     break;
                             }
+                        lvlCounter++;
                     }
             }
+        players[counter].averageLVL += (parseInt(players[counter].openness) + parseInt(players[counter].conscientiousness) + parseInt(players[counter].extraversion) + parseInt(players[counter].agreeableness) + parseInt(players[counter].emotionalRange)) / 5;
         counter++;
     })
     for(var i = 0; i < players.length; i++)
         {
-            console.log(players[i].name + " " + players[i].openness);
+            console.log(players[i].name + " " + players[i].openness + " " + players[i].conscientiousness + " " + players[i].extraversion + " " + players[i].agreeableness + " " + players[i].emotionalRange + " Avg." + players[i].averageLVL);
         }
+    setTimeout(sort(players), 0);
+}
+
+function sort (data)
+{
+    var bestOpenness = [];
+    var bestConscientiousness = [];
+    var bestExtraversion = [];
+    var bestAgreeableness = [];
+    var bestEmotionalRange = [];
+    for(var j = 0; j < 5; j++)
+        {
+            var array = [0];
+            console.log(data.length);
+            for(var i = 0; i < data.length; i++)
+            {
+                switch(j)
+                    {
+                        case 0:
+                            console.log(data[i].openness + " > " + array[0]);
+                            if(data[i].openness > array[0])
+                                {
+                                    console.log(array[0] + " < " + data[i].openness);
+                                    array.splice(0,0,data[i].openness);
+                                    console.log(array.length + "\n");
+                                }
+                    }
+            }
+            for(var i = 0; i < array.length; i++)
+                {
+                    console.log("Biggest - " + array[i]);
+                }
+        }
+    console.log("what");
 }
 
 function Player (name)
@@ -58,4 +92,5 @@ function Player (name)
     this.extraversion = 0;
     this.agreeableness = 0;
     this.emotionalRange = 0;
+    this.averageLVL = 0;
 }
