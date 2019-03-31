@@ -42,8 +42,9 @@ function addUser()
     ID = addList[counter];
     console.log(ID);
     //Get tweets from user timeline
-    client.get('statuses/user_timeline', {screen_name: ID, count: '100', include_rts: 'false'} , function(error, tweets, response)
+    client.get('statuses/user_timeline', {screen_name: ID, count: '1000', include_rts: 'false'} , function(error, tweets, response)
     {
+        //console.log(tweets);
         var outputText = "";
         //Make them json
         var data = JSON.stringify(tweets, null, 2);
@@ -57,7 +58,8 @@ function addUser()
             text = text.replace(/(\r\n|\n|\r)/gm," ");
             text = text.replace(/"/g, '');
             
-            outputText += "{\n\t\"content\":\"" + text + "\",\n\t\"contenttype\": \"text/plain\",\n\t\"created\":" + 0 + ",\n\t\"id\":\"" + profileText[i].id + "\",\n\t\"language\":\"en\"\n}";
+            var parsedUnixTime = new Date(profileText[i].created_at).getUnixTime();
+            outputText += "{\n\t\"content\":\"" + text + "\",\n\t\"contenttype\": \"text/plain\",\n\t\"created\":" + parsedUnixTime + ",\n\t\"id\":\"" + profileText[i].id + "\",\n\t\"language\":\"en\"\n}";
             
             if((i+1) != profileText.length)
             {
@@ -160,3 +162,7 @@ function wait(ms)
     do { d2 = new Date(); }
     while(d2-d < ms);
 }
+
+Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
+if(!Date.now) Date.now = function() { return new Date(); }
+Date.time = function() { return Date.now().getUnixTime(); }
