@@ -44,44 +44,163 @@ function update()
         players[counter].averageLVL += (parseInt(players[counter].openness) + parseInt(players[counter].conscientiousness) + parseInt(players[counter].extraversion) + parseInt(players[counter].agreeableness) + parseInt(players[counter].emotionalRange)) / 5;
         counter++;
     })
-    for(var i = 0; i < players.length; i++)
+    /*for(var i = 0; i < players.length; i++)
         {
             console.log(players[i].name + " " + players[i].openness + " " + players[i].conscientiousness + " " + players[i].extraversion + " " + players[i].agreeableness + " " + players[i].emotionalRange + " Avg." + players[i].averageLVL);
-        }
-    setTimeout(sort(players), 0);
+        }*/
+    setTimeout(function(){sort(players);}, 1000);
 }
 
 function sort (data)
 {
+    console.log("Sorting data");
     var bestOpenness = [];
     var bestConscientiousness = [];
     var bestExtraversion = [];
     var bestAgreeableness = [];
     var bestEmotionalRange = [];
+    var array = [0];
+    var arrayOfNames = [];
+    //var arrayOfNames = [];
+    console.log("------------------------STATS------------------------\n")
     for(var j = 0; j < 5; j++)
         {
-            var array = [0];
-            console.log(data.length);
+            //console.log(data.length);
             for(var i = 0; i < data.length; i++)
             {
                 switch(j)
                     {
                         case 0:
-                            console.log(data[i].openness + " > " + array[0]);
-                            if(data[i].openness > array[0])
+                            for(var k = 0; k < array.length; k++)
                                 {
-                                    console.log(array[0] + " < " + data[i].openness);
-                                    array.splice(0,0,data[i].openness);
-                                    console.log(array.length + "\n");
+                                    if(parseInt(data[i].openness) > array[k])
+                                    {
+                                        array.splice(k,0,data[i].openness);
+                                        arrayOfNames.splice(k,0,data[i].name);
+                                        break;
+                                    }
                                 }
+                            break;
+                        case 1:
+                            //console.log("Checking " + data[i].name + " - " + data[i].conscientiousness + ">" + array[k]);
+                            for(var k = 0; k < array.length; k++)
+                                {
+                                    if(parseInt(data[i].conscientiousness) > array[k])
+                                    {
+                                        array.splice(k,0,data[i].conscientiousness);
+                                        arrayOfNames.splice(k,0,data[i].name);
+                                        break;
+                                    }
+                                }
+                            break;
+                        case 2:
+                            //console.log("Checking " + data[i].name + " - " + data[i].conscientiousness + ">" + array[k]);
+                            for(var k = 0; k < array.length; k++)
+                                {
+                                    if(parseInt(data[i].emotionalRange) > array[k])
+                                    {
+                                        array.splice(k,0,data[i].emotionalRange);
+                                        arrayOfNames.splice(k,0,data[i].name);
+                                        break;
+                                    }
+                                }
+                            break;
+                        case 3:
+                            //console.log("Checking " + data[i].name + " - " + data[i].conscientiousness + ">" + array[k]);
+                            for(var k = 0; k < array.length; k++)
+                                {
+                                    if(parseInt(data[i].extraversion) > array[k])
+                                    {
+                                        array.splice(k,0,data[i].extraversion);
+                                        arrayOfNames.splice(k,0,data[i].name);
+                                        break;
+                                    }
+                                }
+                            break;
+                        case 4:
+                            //console.log("Checking " + data[i].name + " - " + data[i].conscientiousness + ">" + array[k]);
+                            for(var k = 0; k < array.length; k++)
+                                {
+                                    if(parseInt(data[i].agreeableness) > array[k])
+                                    {
+                                        array.splice(k,0,data[i].agreeableness);
+                                        arrayOfNames.splice(k,0,data[i].name);
+                                        break;
+                                    }
+                                }
+                            break;
                     }
             }
-            for(var i = 0; i < array.length; i++)
+            array.pop();
+            switch(j)
                 {
-                    console.log("Biggest - " + array[i]);
+                    case 0:
+                        bestOpenness = array;
+                        for(var i = 0; i < bestOpenness.length; i++)
+                            {
+                                bestOpenness[i] += (" [" + arrayOfNames[i] + "]");
+                            }
+                        break;
+                    case 1:
+                        bestConscientiousness = array;
+                        for(var i = 0; i < bestConscientiousness.length; i++)
+                            {
+                                bestConscientiousness[i] += (" [" + arrayOfNames[i] + "]");
+                            }
+                        break;
+                    case 2:
+                        bestExtraversion = array;
+                        for(var i = 0; i < bestExtraversion.length; i++)
+                            {
+                                bestExtraversion[i] += (" [" + arrayOfNames[i] + "]");
+                            }
+                        break;
+                    case 3:
+                        bestAgreeableness = array;
+                        for(var i = 0; i < bestAgreeableness.length; i++)
+                            {
+                                bestAgreeableness[i] += (" [" + arrayOfNames[i] + "]");
+                            }
+                        break;
+                    case 4:
+                        bestEmotionalRange = array;
+                        for(var i = 0; i < bestEmotionalRange.length; i++)
+                            {
+                                bestEmotionalRange[i] += (" [" + arrayOfNames[i] + "]");
+                            }
+                        break;
+                    default:
+                        console.log("Switch broken!");
+                        break;
                 }
+            arrayOfNames = [];
+            array = [0];
         }
-    console.log("what");
+    console.log("\nOpenness\n");
+    for(var i = 0; i < bestOpenness.length; i++)
+        {
+            console.log(bestOpenness[i]);
+        }
+    console.log("\nConscientiousness\n");
+    for(var i = 0; i < bestConscientiousness.length; i++)
+        {
+            console.log(bestConscientiousness[i]);
+        }
+    console.log("\nEmotional Range\n");
+    for(var i = 0; i < bestEmotionalRange.length; i++)
+        {
+            console.log(bestEmotionalRange[i]);
+        }
+    console.log("\nExtraversion\n");
+    for(var i = 0; i < bestExtraversion.length; i++)
+        {
+            console.log(bestExtraversion[i]);
+        }
+    console.log("\nAgreeableness\n");
+    for(var i = 0; i < bestAgreeableness.length; i++)
+        {
+            console.log(bestAgreeableness[i]);
+        }
 }
 
 function Player (name)
