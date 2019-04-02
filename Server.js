@@ -41,7 +41,7 @@ http.createServer(function (req, res) {
 });
 }).listen(5000);
 
-setInterval(check, 100);
+setInterval(check, 1000);
 
 function check()
 {
