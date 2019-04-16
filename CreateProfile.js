@@ -2,22 +2,6 @@ var PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights
 var Twitter = require('twitter');
 var fs = require('fs');
 var rimraf = require("rimraf");
-
-//Authentication into the Personality Insight API
-var personalityInsights = new PersonalityInsightsV3({
-  version: '2019-03-22',
-  iam_apikey: 'YMpOWrKJysOg9xdNt3HNIcpnVqZHve-_VaVKkq4cokxi',
-  url: 'https://gateway-lon.watsonplatform.net/personality-insights/api'
-});
-
-//Authentication into Twitter
-var client = new Twitter({
-  consumer_key: 'PX8hDcf9YHAKqXII5TdhlHMVw',
-  consumer_secret: 'FFb7qceLkOXSa0GnLMgzItSeIYsmpckxToTZe0jUHPVMRNeWPV',
-  access_token_key: '3135731542-Amvbgvz8s1t0v80KW4TCLnoFfNzUIBSJuWwXvWM',
-  access_token_secret: 'Bja7LysYPFqkMubC8i9d8R1GljlTozLjtWtIRu52BVz6F'
-});
-
 var text = "";
 var completed = false;
 var ID = "default";
@@ -25,26 +9,37 @@ var counter = 0;
 var lastWordIndex = 0;
 var addList = new Array();
 var lvlPerPercentile = 0.05;
-
 var addFile = fs.readFileSync('add.txt', 'utf8');
-
-//Create question template
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-})
+var Credentials = fs.readFileSync('Keys.json', 'utf-8');
+var ParsedCredentials = JSON.parse(Credentials);
 
 setTimeout(processText, 500);
 setInterval(checkCompletion, 500);
 
 function addUser()
 {
+    //Authentication into Twitter
+    var client = new Twitter
+    ({
+        consumer_key: ParsedCredentials.twitter[0].consumer_key,
+        consumer_secret: ParsedCredentials.twitter[0].consumer_secret,
+        access_token_key: ParsedCredentials.twitter[0].access_token_key,
+        access_token_secret: ParsedCredentials.twitter[0].access_token_secret
+    });
+    
+    //Authentication into the Personality Insight API
+    var personalityInsights = new PersonalityInsightsV3
+    ({
+        version: ParsedCredentials.ibm[0].version,
+        iam_apikey: ParsedCredentials.ibm[0].iam_apikey,
+        url: ParsedCredentials.ibm[0].url,
+    });
+
     ID = addList[counter];
     console.log(ID);
     //Get tweets from user timeline
     client.get('statuses/user_timeline', {screen_name: ID, count: '1000', include_rts: 'false'} , function(error, tweets, response)
     {
-        //console.log(tweets);
         var outputText = "";
         //Make them json
         var data = JSON.stringify(tweets, null, 2);
@@ -97,7 +92,6 @@ function addUser()
                 }
                 for(var i = 0; i < profile.personality.length; i++)
                 {
-                    //console.log(profile.personality[i].name + " " + profile.personality[i].percentile + "\n");
                     filtered += profile.personality[i].name + " " + profile.personality[i].percentile + "\n";
                     var lvl = ((profile.personality[i].percentile.toFixed(2) / lvlPerPercentile).toString());
                     lvl[1] != '.' ? lvl = lvl.substring(0,2) : lvl = lvl.substring(0,1);
@@ -106,8 +100,6 @@ function addUser()
                     {
                         lvl = 20;
                     }
-                    console.log(lvl);
-                    //console.log(lvl1 + " " + lvl2);
                     fs.appendFileSync('./Users/' + ID + '/stats.txt', profile.personality[i].name + " LVL-" + lvl + "\n");
                 }
                 fs.writeFileSync('./Users/' + ID + '/outputUnity.txt', filtered);
