@@ -14,7 +14,7 @@ var Credentials = fs.readFileSync('Keys.json', 'utf-8');
 var ParsedCredentials = JSON.parse(Credentials);
 
 setTimeout(processText, 500);
-setInterval(checkCompletion, 500);
+setInterval(checkCompletion, 10);
 
 function addUser()
 {
@@ -100,7 +100,7 @@ function addUser()
                     {
                         lvl = 20;
                     }
-                    fs.appendFileSync('./Users/' + ID + '/stats.txt', profile.personality[i].name + " LVL-" + lvl + "\n");
+                    fs.appendFileSync('./Users/' + ID + '/stats.txt', lvl + " ");
                 }
                 fs.writeFileSync('./Users/' + ID + '/outputUnity.txt', filtered);
                 fs.writeFileSync('./Users/' + ID + '/outputRawUnity.json', JSON.stringify(profile, null, 2));
