@@ -14,27 +14,27 @@ var Credentials = fs.readFileSync('Keys.json', 'utf-8');
 var ParsedCredentials = JSON.parse(Credentials);
 
 setTimeout(processText, 500);
-setInterval(checkCompletion, 10);
+setInterval(checkCompletion, 0);
+
+//Authentication into Twitter
+var client = new Twitter
+({
+    consumer_key: ParsedCredentials.twitter[0].consumer_key,
+    consumer_secret: ParsedCredentials.twitter[0].consumer_secret,
+    access_token_key: ParsedCredentials.twitter[0].access_token_key,
+    access_token_secret: ParsedCredentials.twitter[0].access_token_secret
+});
+
+//Authentication into the Personality Insight API
+var personalityInsights = new PersonalityInsightsV3
+({
+    version: ParsedCredentials.ibm[0].version,
+    iam_apikey: ParsedCredentials.ibm[0].iam_apikey,
+    url: ParsedCredentials.ibm[0].url,
+});
 
 function addUser()
 {
-    //Authentication into Twitter
-    var client = new Twitter
-    ({
-        consumer_key: ParsedCredentials.twitter[0].consumer_key,
-        consumer_secret: ParsedCredentials.twitter[0].consumer_secret,
-        access_token_key: ParsedCredentials.twitter[0].access_token_key,
-        access_token_secret: ParsedCredentials.twitter[0].access_token_secret
-    });
-    
-    //Authentication into the Personality Insight API
-    var personalityInsights = new PersonalityInsightsV3
-    ({
-        version: ParsedCredentials.ibm[0].version,
-        iam_apikey: ParsedCredentials.ibm[0].iam_apikey,
-        url: ParsedCredentials.ibm[0].url,
-    });
-
     ID = addList[counter];
     console.log(ID);
     //Get tweets from user timeline
