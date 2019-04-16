@@ -2,37 +2,42 @@ var http = require('http');
 var fs = require('fs');
 var url = require('url');
 var childProcess = require('child_process');
-
 var create = false;
 
 http.createServer(function (req, res) {
     var q = url.parse(req.url, true);
     var filename = "." + q.pathname;
-    fs.readFile(filename, function(err, data) {
-        if (err) 
-        {
-            res.writeHead(404, {'Content-Type': 'text/html'});
-            return res.end("Not in the database, sorry!");
-        } 
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.write(data);
-        return res.end();
-    });
     var saveUsername = "";
     for(var j = 2; j < req.url.length; j++)
     {
         saveUsername += req.url[j];
     }
     if(req.url[1] == '@')
+    {
+        fs.appendFileSync('add.txt', saveUsername + " \n");
+        create = true;
+        return res.end("User creation in progress!");
+    }
+    else if(req.url[1] == "!")
+    {
+        console.log("Add to queue");
+        fs.appendFileSync('queue.txt', saveUsername + " \n");
+        return res.end("User added to the fight queue!");
+    }
+    else
+    {
+        fs.readFile(filename, function(err, data) 
         {
-            fs.appendFileSync('add.txt', saveUsername + " \n");
-            create = true;
-        }
-    if(req.url[1] == "!")
-        {
-            console.log("Add to queue");
-            fs.appendFileSync('queue.txt', saveUsername + " \n");
-        }
+            if (err) 
+            {
+                res.writeHead(404, {'Content-Type': 'text/html'});
+                return res.end("Not in the database, sorry!");
+            } 
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write(data);
+            return res.end();
+        });
+    }
     fs.appendFile('data.txt', req.url + "\n", function (err) {
     if (err)
     {
