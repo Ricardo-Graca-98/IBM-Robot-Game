@@ -9,7 +9,6 @@ function update()
     {
         for(var i = 0; i < files.length; i++)
         {
-            console.log(files[i]);
             fs.appendFileSync('add.txt', files[i] + " \n");
         }
         runScript('./CreateProfile.js', function (err) 
