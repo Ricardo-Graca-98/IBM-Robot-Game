@@ -4,25 +4,57 @@ var url = require('url');
 var childProcess = require('child_process');
 var create = false;
 
+setTimeout(checkUpdate, 0);
+setInterval(checkUpdate, 86400000);
+setInterval(check, 100);
+
 http.createServer(function (req, res) {
     var q = url.parse(req.url, true);
     var filename = "." + q.pathname;
     var saveUsername = "";
+    var time = new Date;
+    fs.appendFile('data.txt', req.url + " - " + time.getHours() + ":" + time.getMinutes() + " " + time.getDay() + "/" + time.getMonth() + "/" + time.getFullYear() + "\n", function(err){
+        if(err)
+        {
+            throw err;
+        }
+    });
     for(var j = 2; j < req.url.length; j++)
     {
         saveUsername += req.url[j];
     }
     if(req.url[1] == '@')
     {
-        fs.appendFileSync('add.txt', saveUsername + " \n");
-        create = true;
-        return res.end("User creation in progress!");
+        if(fs.existsSync('./Users/' + saveUsername))
+        {
+            return res.end("User is already in the database!");
+        }
+        else
+        {
+            fs.appendFileSync('add.txt', saveUsername + " \n");
+            create = true;
+            return res.end("User creation in progress!");
+        }
     }
     else if(req.url[1] == "!")
     {
-        console.log("Add to queue");
-        fs.appendFileSync('queue.txt', saveUsername + " \n");
-        return res.end("User added to the fight queue!");
+        var fightList = fs.readFileSync('queue.txt', 'utf-8');
+        var index = fightList.search(saveUsername);
+        if(index < 0)
+        {
+            console.log("Add to queue");
+            fs.appendFileSync('queue.txt', saveUsername + " \n");
+            runScript('./Fight.js', function (err)
+            {
+            if (err) throw err;
+            });
+            return res.end("User added to the fight queue!");
+        }
+        else
+        {
+            return res.end("Already in the queue!");
+        }
+        
     }
     else
     {
@@ -38,15 +70,15 @@ http.createServer(function (req, res) {
             return res.end();
         });
     }
-    fs.appendFile('data.txt', req.url + "\n", function (err) {
-    if (err)
-    {
-        throw err;
-    }
-});
 }).listen(5000);
 
-setInterval(check, 100);
+function checkUpdate()
+{
+    runScript('./UpdateWeekly.js', function (err)
+    {
+        if (err) throw err;
+    })
+}
 
 function check()
 {
