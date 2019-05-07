@@ -7,19 +7,35 @@ setTimeout(checkDate, 0);
 
 function checkDate()
 {
-    var nextUpdate = fs.readFileSync('update.txt', 'utf8');
-    if(nextUpdate <= date.getDate())
+    var data = fs.readFileSync('update.txt', 'utf8');
+    var nextUpdate = data.split(" ");
+    console.log(date.getDate() + " - " + (date.addDays(7)).getDate());
+    console.log(date.getMonth() + 1);
+    if(nextUpdate[1] == date.getMonth() + 1)
     {
-        console.log("Updating...");
-        fs.writeFileSync('update.txt', (date.addDays(7)).getDate());
+        if(nextUpdate[0] <= date.getDate())
+        {
+            console.log("Updating...");
+            var month;
+            if(date.getDay() > (date.addDays(7)).getDate())
+            {
+                month = date.getMonth() + 2;
+            }
+            else
+            {
+                month = date.getMonth() + 1;
+            }
+        fs.writeFileSync('update.txt', (date.addDays(7)).getDate() + " " + month);
         runScript('./Update.js', function (err) 
             {
                 if (err) throw err;
             });
+        }
+        
     }
     else
     {
-        console.log("Update in " + (nextUpdate - date.getDate()) + " days");
+        console.log("Update in " + (nextUpdate[0] - date.getDate()) + " days");
     }
 }
 
