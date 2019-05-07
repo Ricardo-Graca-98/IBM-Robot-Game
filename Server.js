@@ -1,49 +1,60 @@
-var http = require('http');
+var app = require('http').createServer(handler)
+var io = require('socket.io')(app);
 var fs = require('fs');
 var url = require('url');
 var childProcess = require('child_process');
-var create = false;
 
-setTimeout(checkUpdate, 0);
-setInterval(checkUpdate, 86400000);
-setInterval(check, 100);
+app.listen(80);
 
-http.createServer(function (req, res) {
-    var q = url.parse(req.url, true);
-    var filename = "." + q.pathname;
-    var saveUsername = "";
+function handler (req, res) 
+{
+    var request = url.parse(req.url, true);
+    var filename = "." + request.pathname;
+    var requestText = "";
+    //Get CODE
+    var requestChar = req.url[1];
+
+    //Store all requests
     var time = new Date;
-    fs.appendFile('data.txt', req.url + " - " + time.getHours() + ":" + time.getMinutes() + " " + time.getDay() + "/" + time.getMonth() + "/" + time.getFullYear() + "\n", function(err){
+    fs.appendFile('data.txt', req.url + " - " + time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear() + "\n", function(err){
         if(err)
         {
             throw err;
         }
     });
+
+    //Separate the CODE from the TEXT
     for(var j = 2; j < req.url.length; j++)
     {
-        saveUsername += req.url[j];
+        requestText += req.url[j];
     }
-    if(req.url[1] == '@')
+
+    /*************************************DATA HANDLING*********************************************/
+
+    if(requestChar == '@')
     {
-        if(fs.existsSync('./Users/' + saveUsername))
+        if(fs.existsSync('./Users/' + requestText))
         {
             return res.end("User is already in the database!");
         }
         else
         {
-            fs.appendFileSync('add.txt', saveUsername + " \n");
+            fs.appendFileSync('add.txt', requestText + " \n");
             create = true;
             return res.end("User creation in progress!");
         }
     }
-    else if(req.url[1] == "!")
+    else if(requestChar == "!")
     {
+        if (fs.existsSync('queue.txt') != 1) {
+            fs.appendFileSync('queue.txt',"");
+        }
         var fightList = fs.readFileSync('queue.txt', 'utf-8');
-        var index = fightList.search(saveUsername);
+        var index = fightList.search(requestText);
         if(index < 0)
         {
             console.log("Add to queue");
-            fs.appendFileSync('queue.txt', saveUsername + " \n");
+            fs.appendFileSync('queue.txt', requestText + " \n");
             runScript('./Fight.js', function (err)
             {
             if (err) throw err;
@@ -58,19 +69,21 @@ http.createServer(function (req, res) {
     }
     else
     {
-        fs.readFile(filename, function(err, data) 
+        fs.readFile(__dirname + '/index.html',
+        function (err, data) 
         {
             if (err) 
             {
-                res.writeHead(404, {'Content-Type': 'text/html'});
-                return res.end("Not in the database, sorry!");
-            } 
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.write(data);
-            return res.end();
+                res.writeHead(500);
+                return res.end('Error loading index.html');
+            }
+        res.writeHead(200);
+        res.end(data);
         });
     }
-}).listen(5000);
+
+    /*************************************DATA HANDLING OVER*****************************************/
+}
 
 function checkUpdate()
 {
@@ -115,3 +128,16 @@ function runScript(scriptPath, callback) {
         callback(err);
     });
 }
+
+var clients = 0;
+io.sockets.on('connection', function (socket) 
+{
+    console.log("User connected!");
+    ++clients;
+    io.sockets.emit('users_count', clients);
+    socket.on('disconnect', function () 
+    {
+        console.log("User disconnected!");
+        --clients;
+    });
+});
