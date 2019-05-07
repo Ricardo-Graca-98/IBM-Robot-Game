@@ -41,11 +41,14 @@ function addUser()
     client.get('statuses/user_timeline', {screen_name: ID, count: '1000', include_rts: 'false'} , function(error, tweets, response)
     {
         var outputText = "";
+
         //Make them json
         var data = JSON.stringify(tweets, null, 2);
+
         //Clean them
         var profileText = JSON.parse(data);
         outputText += "{ \"contentItems\" : [\n\n";
+
         //Take tweet text
         for(var i = 0; i < profileText.length;   i++)
         {
@@ -68,11 +71,13 @@ function addUser()
         }
         fs.writeFileSync('./Users/' + ID + '/profile.json', outputText);
         var profileParams = {
+            
             // Get the content from the JSON file.
             content: require('./Users/' + ID + '/profile.json'),
             content_type: 'application/json',
             consumption_preferences: 'false'
         };
+
         //Gets the information from the Personality Insight tool belonging to the Watson AI
         personalityInsights.profile(profileParams, function(error, profile) {
             if (error) 
@@ -104,6 +109,7 @@ function addUser()
                 }
                 fs.writeFileSync('./Users/' + ID + '/outputUnity.txt', filtered);
                 fs.writeFileSync('./Users/' + ID + '/outputRawUnity.json', JSON.stringify(profile, null, 2));
+                fs.writeFileSync('./Users/' + ID + '/robotStats.txt', "5 5 5 5");
                 completed = true;
                 console.log("Account created!");
             }
