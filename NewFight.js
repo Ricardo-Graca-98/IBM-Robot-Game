@@ -41,50 +41,58 @@ function fight()
             var readSkills = fs.readFileSync('./Users/' + nameArray[i == 0 ? player1 : player2] + '/robotStats.txt', 'utf8');
             for(var j = 0; j < readSkills.length; j++)
             {
-                var singleStat = 0;
-                if(readSkills[j] != ' ')
+                var singleStat = "";
+                while(readSkills[j] != ' ')
                 {
-                    singleStat = parseInt(readSkills[j], 10);
-                    i == 0 ? player1Skills.push(singleStat) : player2Skills.push(singleStat);
-                    console.log(i == 0 ? player1Skills[player1Skills.length-1] : player2Skills[player2Skills.length-1]);
+                    singleStat += readSkills[j];
+                    j++;
                 }
+                i == 0 ? player1Skills.push(singleStat) : player2Skills.push(singleStat);
             }
-            console.log("");
         }
 
-        do
+        var slowest = player1Skills[1] > player2Skills[1] ? player2Skills : player1Skills;
+        var fastest = player1Skills[1] > player2Skills[1] ? player1Skills : player2Skills;
+        var fastestName = player1Skills[1] > player2Skills[1] ? nameArray[player1] : nameArray[player2];
+        var slowestName = player1Skills[1] > player2Skills[1] ? nameArray[player2] : nameArray[player1];
+
+        while(player1Skills[2] > 0 && player2Skills[2] > 0)
         {
-            if(player1Skills[1] > player2Skills[1])
+            for(var i = 0; i < slowest[1]; i++)
             {
-                attack(player1Skills[0], player2Skills[3]);
-            }
-            else if(player2Skills[1] > player1Skills[1])
-            {
-                attack(player2Skills[0], player1Skills[3]);
-            }
-            else
-            {
-                var random = Math.random();
-                if(random < 0.5)
+                if(attack(slowest[0], fastest[3]) == 0 && fastest[2] > 0 && slowest[2] > 0)
                 {
-                    attack(player1Skills[0], player2Skills[3]);
+                    fastest[2] -= slowest[0];
+                    console.log(slowestName + " hit " + fastestName + " dealing " + slowest[0] + " dmg!");
+                    console.log(fastest[2] + " health remaining!");
                 }
-                else
+                else if(slowest[2] > 0 && fastest[2] > 0)
                 {
-                    attack(player2Skills[0], player1Skills[3]);
+                    console.log(slowestName + " misses!");
                 }
             }
+            for(var i = 0; i < fastest[1]; i++)
+            {
+                if(attack(fastest[0], slowest[3]) == 0 && slowest[2] > 0 && fastest[2] > 0)
+                {
+                    slowest[2] -= fastest[0];
+                    console.log(fastestName + " hit " + slowestName + " dealing " + fastest[0] + " dmg!");
+                    console.log(slowest[2] + " health remaining!");
+                }
+                else if(slowest[2] > 0 && fastest[2] > 0)
+                {
+                    console.log(fastestName + " misses!");
+                }
+            }
+            console.log(player1Skills[1] > player2Skills[1] ? nameArray[player1] + " health - " + fastest[2] + " | " + nameArray[player2] + " health - " + slowest[2] : nameArray[player2] + " health - " + fastest[2] + " | " + nameArray[player1] + " health - " + slowest[2]);
+            console.log("");
         }
-        while(player1Skills[2] <= 0 && player2Skills[2] <= 0)
-        {
-            player2Skills[2] = 0;
-        }
+        console.log(player1Skills[2] > player2Skills[2] ? nameArray[player1] + " wins!" : nameArray[player2] + " wins!");
     }
 }
 
 function attack(dmg, evasion)
 {
     var evasion = Math.floor(Math.random() * (+100 - +0)) + +0 < 5 ? 1 : 0;
-    console.log(evasion);
     return evasion;
 }
