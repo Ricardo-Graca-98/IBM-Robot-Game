@@ -3,6 +3,14 @@ var io = require('socket.io')(app);
 var fs = require('fs');
 var url = require('url');
 var childProcess = require('child_process');
+require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+    console.log("Hosted at " + add + ":" + app.address().port);
+  })
+var create = false;
+
+setTimeout(checkUpdate, 0);
+setInterval(checkUpdate, 86400000);
+setInterval(check, 100);
 
 app.listen(80);
 
@@ -67,7 +75,7 @@ function handler (req, res)
         }
         
     }
-    else
+    else if(requestChar == null)
     {
         fs.readFile(__dirname + '/index.html',
         function (err, data) 
@@ -79,6 +87,20 @@ function handler (req, res)
             }
         res.writeHead(200);
         res.end(data);
+        });
+    }
+    else
+    {
+        fs.readFile(filename, function(err, data)
+        {
+            if (err) 
+            {
+                res.writeHead(404, {'Content-Type': 'text/html'});
+                return res.end("Not in the database, sorry!");
+            } 
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write(data);
+            return res.end();
         });
     }
 
