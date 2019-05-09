@@ -109,7 +109,7 @@ function addUser()
                 }
                 fs.writeFileSync('./Users/' + ID + '/outputUnity.txt', filtered);
                 fs.writeFileSync('./Users/' + ID + '/outputRawUnity.json', JSON.stringify(profile, null, 2));
-                fs.writeFileSync('./Users/' + ID + '/robotStats.txt', "5 5 5 5");
+                fs.writeFileSync('./Users/' + ID + '/robotStats.txt', "10 1 100 5 ");
                 completed = true;
                 console.log("Account created!");
             }
