@@ -4,11 +4,11 @@
     <meta charset="UTF-8"> 
     <style>
         .bar {
-            fill: steelblue;
+            fill: #B100FF;
         }
 
         .highlight {
-            fill: greenyellow;
+            fill: #E770FE;
         }
     </style>
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -42,7 +42,7 @@
         var g = svg.append("g")
                 .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
-        d3.csv("monthlyUsers.csv", function(error, data) {
+        d3.csv("https://raw.githubusercontent.com/DisturbeD-347939/IBM-Robot-Game/master/Stats/monthlyUsers.csv", function(error, data) {
             if (error) {
                 throw error;
             }
@@ -255,7 +255,7 @@
         var g = svg.append("g")
                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-        var color = d3.scaleOrdinal(['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c']);
+        var color = d3.scaleOrdinal(['#6100FF','#7500FF','#8700FF','#9B00FE','#B100FF']);
 
         var pie = d3.pie().value(function(d) { 
                 return d.percent; 
@@ -269,7 +269,7 @@
                       .outerRadius(radius)
                       .innerRadius(radius - 80);
 
-        d3.csv("personalityStats.csv", function(error, data) 
+        d3.csv("https://raw.githubusercontent.com/DisturbeD-347939/IBM-Robot-Game/master/Stats/personalityStats.csv", function(error, data) 
         {
             if (error) {
                 throw error;
