@@ -37,12 +37,30 @@ var personalityInsights = new PersonalityInsightsV3
 
 function addUser()
 {
+    var outputText = "";
     ID = addList[counter];
     console.log(ID);
     //Get tweets from user timeline
     client.get('statuses/user_timeline', {screen_name: ID, count: '1000', include_rts: 'false'} , function(error, tweets, response)
     {
-        var outputText = "";
+        if(!fs.existsSync('./Users/' + ID + '/auth.txt'))
+        {
+            fs.writeFileSync('./Users/' + ID + '/auth.txt', 0);
+            console.log("NEW USER!");
+        }
+        else
+        {
+            var auth = fs.readFileSync('./Users/' + ID + '/auth.txt', 'utf-8');
+            if(auth == 0)
+            {
+                console.log("Not authenticated!");
+                fs.writeFileSync('sendAuth.txt', "ricardojg1@hotmail.com");
+            }
+            else
+            {
+                console.log("Authorized");
+            }
+        }
 
         //Make them json
         var data = JSON.stringify(tweets, null, 2);
