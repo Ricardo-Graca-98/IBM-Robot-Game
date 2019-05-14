@@ -2,6 +2,7 @@ var PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights
 var Twitter = require('twitter');
 var fs = require('fs');
 var rimraf = require("rimraf");
+
 var text = "";
 var completed = false;
 var ID = "default";
@@ -10,6 +11,7 @@ var lastWordIndex = 0;
 var addList = new Array();
 var lvlPerPercentile = 0.05;
 var addFile = fs.readFileSync('add.txt', 'utf8');
+
 var Credentials = fs.readFileSync('Keys.json', 'utf-8');
 var ParsedCredentials = JSON.parse(Credentials);
 
