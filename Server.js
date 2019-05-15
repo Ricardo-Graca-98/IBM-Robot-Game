@@ -120,11 +120,18 @@ function check()
 {
     if(create)
     {
-            runScript('./CreateProfile.js', function (err) 
+        runScript('./CreateProfile.js', function (err) 
+        {
+            if (err) throw err;
+        });
+        create = false;
+    }
+    if (fs.existsSync('sendAuth.txt')) 
+    {
+        runScript('./Authentication.js', function (err) 
             {
                 if (err) throw err;
             });
-        create = false;
     }
 }
 
