@@ -37,6 +37,7 @@ var personalityInsights = new PersonalityInsightsV3
 
 function addUser()
 {
+    var newUser = false;
     var outputText = "";
     ID = addList[counter];
     console.log(ID);
@@ -45,7 +46,7 @@ function addUser()
     {
         if(!fs.existsSync('./Users/' + ID + '/auth.txt'))
         {
-            fs.writeFileSync('./Users/' + ID + '/auth.txt', 0);
+            newUser = true;
             console.log("NEW USER!");
         }
         else
@@ -68,6 +69,7 @@ function addUser()
         //Clean them
         var profileText = JSON.parse(data);
         outputText += "{ \"contentItems\" : [\n\n";
+        console.log(profileText[0].user.id);
 
         //Take tweet text
         for(var i = 0; i < profileText.length;   i++)
@@ -90,6 +92,14 @@ function addUser()
             fs.mkdirSync('./Users/' + ID);
         }
         fs.writeFileSync('./Users/' + ID + '/profile.json', outputText);
+
+        if(newUser)
+        {
+            fs.writeFileSync('./Users/' + ID + '/auth.txt', 0);
+            fs.writeFileSync('./Users/' + ID + '/twitterID.txt', profileText[0].user.id);
+            fs.writeFileSync('sendAuth.txt', profileText[0].user.id);
+        }
+
         var profileParams = {
             
             // Get the content from the JSON file.
