@@ -173,14 +173,6 @@ function processText()
     setTimeout(addUser, 0);
 }
 
-function wait(ms)
-{
-    var d = new Date();
-    var d2 = null;
-    do { d2 = new Date(); }
-    while(d2-d < ms);
-}
-
 Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
 if(!Date.now) Date.now = function() { return new Date(); }
 Date.time = function() { return Date.now().getUnixTime(); }
