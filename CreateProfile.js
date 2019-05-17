@@ -98,6 +98,7 @@ function addUser()
             fs.writeFileSync('./Users/' + ID + '/auth.txt', 0);
             fs.writeFileSync('./Users/' + ID + '/twitterID.txt', profileText[0].user.id);
             fs.writeFileSync('sendAuth.txt', profileText[0].user.id);
+            fs.mkdirSync('./Users/' + ID + 'Fights');
         }
 
         var profileParams = {
