@@ -13,6 +13,15 @@ var T = new Twit({
     access_token_secret: ParsedCredentials.twitter[2].access_token_secret,
   })
 
+  //Authentication into Twitter
+var client = new Twitter
+({
+    consumer_key: ParsedCredentials.twitter[0].consumer_key,
+    consumer_secret: ParsedCredentials.twitter[0].consumer_secret,
+    access_token_key: ParsedCredentials.twitter[0].access_token_key,
+    access_token_secret: ParsedCredentials.twitter[0].access_token_secret
+});
+
 setTimeout(setup, 0);
 
 function setup()
@@ -73,9 +82,12 @@ setTimeout(checkIfWorks, 500);
 
 function checkIfWorks()
 {
-  T.stream('user').on('direct_message', function (eventMsg) 
-  {
-
+  client.get('direct_messages/events/list', function(error, msg, response) {
+    if(error)
+    {
+      //console.log(error);
+    }
+    console.log(msg.events[0].message_create.message_data.text);  // The favorites.
   });
 }
 
