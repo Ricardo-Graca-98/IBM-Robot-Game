@@ -11,6 +11,7 @@ var create = false;
 setTimeout(checkUpdate, 0);
 setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
+setInterval(checkAuth, 60000);
 
 app.listen(80);
 
@@ -116,6 +117,17 @@ function checkUpdate()
     })
 }
 
+function checkAuth()
+{
+    if (fs.existsSync('sendAuth.txt')) 
+    {
+        runScript('./Authentication.js', function (err) 
+            {
+                if (err) throw err;
+            });
+    }
+}
+
 function check()
 {
     if(create)
@@ -125,13 +137,6 @@ function check()
             if (err) throw err;
         });
         create = false;
-    }
-    if (fs.existsSync('sendAuth.txt')) 
-    {
-        runScript('./Authentication.js', function (err) 
-            {
-                if (err) throw err;
-            });
     }
 }
 
