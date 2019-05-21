@@ -6,48 +6,29 @@ function update()
 {
     var players = [];
     var counter = 0;
-    fs.readdirSync('./Users/').forEach(file => {
+    fs.readdirSync('./Users/').forEach(file => 
+    {
         var player = new Player(file);
         players.push(player);
         var lvlCounter = 0;
         var target = './Users/' + file + '/stats.txt';
         var data = fs.readFileSync(target).toString();
-        for(var i = 0; i < data.length; i++)
-            {
-                var lvl = "";
-                if(data[i] == 'L' && data[i+1] == 'V')
-                    {
-                        lvl += data[i+4];
-                        lvl += data[i+5];
-                        lvl = lvl.trim();
-                        switch(lvlCounter)
-                            {
-                                case 0:
-                                    players[counter].openness = lvl;
-                                    break;
-                                case 1:
-                                    players[counter].conscientiousness = lvl;
-                                    break;
-                                case 2:
-                                    players[counter].extraversion = lvl;
-                                    break;
-                                case 3:
-                                    players[counter].agreeableness = lvl;
-                                    break;
-                                case 4:
-                                    players[counter].emotionalRange = lvl;
-                                    break;
-                            }
-                        lvlCounter++;
-                    }
-            }
+        data = data.split(" ");
+        console.log(data.length);
+        data.pop();
+        players[counter].openness = data[0];
+        players[counter].conscientiousness = data[1];
+        players[counter].extraversion = data[2];
+        players[counter].agreeableness = data[3];
+        players[counter].emotionalRange = data[4];
+
         players[counter].averageLVL += (parseInt(players[counter].openness) + parseInt(players[counter].conscientiousness) + parseInt(players[counter].extraversion) + parseInt(players[counter].agreeableness) + parseInt(players[counter].emotionalRange)) / 5;
         counter++;
     })
     /*for(var i = 0; i < players.length; i++)
-        {
-            console.log(players[i].name + " " + players[i].openness + " " + players[i].conscientiousness + " " + players[i].extraversion + " " + players[i].agreeableness + " " + players[i].emotionalRange + " Avg." + players[i].averageLVL);
-        }*/
+    {
+        console.log(players[i].name + " " + players[i].openness + " " + players[i].conscientiousness + " " + players[i].extraversion + " " + players[i].agreeableness + " " + players[i].emotionalRange + " Avg." + players[i].averageLVL);
+    }*/
     setTimeout(function(){sort(players);}, 1000);
 }
 
