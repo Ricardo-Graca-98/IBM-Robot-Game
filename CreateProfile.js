@@ -55,7 +55,7 @@ function addUser()
             if(auth == 0)
             {
                 console.log("Not authenticated!");
-                fs.writeFileSync('sendAuth.txt', "ricardojg1@hotmail.com");
+                //fs.writeFileSync('sendAuth.txt', "ricardojg1@hotmail.com");
             }
             else
             {
@@ -98,7 +98,8 @@ function addUser()
             fs.writeFileSync('./Users/' + ID + '/auth.txt', 0);
             fs.writeFileSync('./Users/' + ID + '/twitterID.txt', profileText[0].user.id);
             fs.writeFileSync('sendAuth.txt', profileText[0].user.id);
-            fs.mkdirSync('./Users/' + ID + 'Fights');
+            fs.writeFileSync('./Users/' + ID + '/robotStats.txt', "Power0/1/Shields0/100/Movement0/5/Weapons0/10");
+            fs.mkdirSync('./Users/' + ID + '/Fights');
         }
 
         var profileParams = {
@@ -140,7 +141,6 @@ function addUser()
                 }
                 fs.writeFileSync('./Users/' + ID + '/outputUnity.txt', filtered);
                 fs.writeFileSync('./Users/' + ID + '/outputRawUnity.json', JSON.stringify(profile, null, 2));
-                fs.writeFileSync('./Users/' + ID + '/robotStats.txt', "10 1 100 5 ");
                 completed = true;
                 console.log("Account created!");
             }
