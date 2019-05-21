@@ -12,7 +12,7 @@ setTimeout(checkAuth, 0);
 setTimeout(checkUpdate, 0);
 setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
-setInterval(checkAuth, 60000);
+//setInterval(checkAuth, 60000); REMOVE THESE AFTER TESTING
 
 app.listen(80);
 
@@ -112,6 +112,7 @@ function handler (req, res)
 
 function checkUpdate()
 {
+    console.log("Runninng UpdateWeekly.js");
     runScript('./UpdateWeekly.js', function (err)
     {
         if (err) throw err;
@@ -122,6 +123,7 @@ function checkAuth()
 {
     if (fs.existsSync('sendAuth.txt')) 
     {
+        console.log("Runninng Authentication.js");
         runScript('./Authentication.js', function (err) 
             {
                 if (err) throw err;
@@ -133,6 +135,7 @@ function check()
 {
     if(create)
     {
+        console.log("Runninng CreateProfile.js");
         runScript('./CreateProfile.js', function (err) 
         {
             if (err) throw err;
