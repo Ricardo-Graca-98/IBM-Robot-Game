@@ -82,12 +82,48 @@ setTimeout(checkIfWorks, 500);
 
 function checkIfWorks()
 {
-  client.get('direct_messages/events/list', function(error, msg, response) {
+  client.get('direct_messages/events/list', function(error, msg, response) 
+  {
     if(error)
     {
-      //console.log(error);
+      console.log(error);
     }
-    console.log(msg.events[0].message_create.message_data.text);  // The favorites.
+    else
+    {
+      for(var i = 0; i < msg.events.length; i++)
+      {
+        console.log(msg.events[i].message_create.sender_id);
+        if(msg.events[i].message_create.message_data.text == "Yes" || msg.events[i].message_create.message_data.text == "yes")
+        {
+          fs.readdir('./Users', (err, files) => 
+          {
+            for(var j = 0; j < files.length; j++)
+            {
+              var id = fs.readFileSync('./Users' + '/' + files[j] + "/twitterID.txt", 'utf-8');
+              /*if(id == msg.events[i].message_create.sender_id)
+              {
+                //console.log(files[j] + " just confirmed his account!");
+              }*/
+            }
+          });
+        }
+        else if(msg.events[i].message_create.message_data.text == "No" || msg.events[i].message_create.message_data.text == "no")
+        {
+          fs.readdir('./Users', (err, files) => 
+          {
+            for(var j = 0; j < files.length; j++)
+            {
+              var id = fs.readFileSync('./Users' + '/' + files[j] + "/twitterID.txt", 'utf-8');
+              /*if(id == msg.events[i].message_create.sender_id)
+              {
+                console.log(files[j] + " did not confirm is account! Deleting...");
+                rimraf.sync('./Users/' + files[j]);
+              }*/
+            }
+          });
+        }
+      }
+    }
   });
 }
 
