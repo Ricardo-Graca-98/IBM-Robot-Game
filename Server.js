@@ -8,6 +8,7 @@ require('dns').lookup(require('os').hostname(), function (err, add, fam) {
   })
 var create = false;
 
+setTimeout(checkAuth, 0);
 setTimeout(checkUpdate, 0);
 setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
