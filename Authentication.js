@@ -78,7 +78,7 @@ function sendMessage(ID)
   });
 }
 
-setTimeout(checkIfWorks, 500);
+//setTimeout(checkIfWorks, 500);
 
 function checkIfWorks()
 {
@@ -90,40 +90,51 @@ function checkIfWorks()
     }
     else
     {
+      var confirmedUsers = new Array();
       for(var i = 0; i < msg.events.length; i++)
       {
-        console.log(msg.events[i].message_create.sender_id);
-        if(msg.events[i].message_create.message_data.text == "Yes" || msg.events[i].message_create.message_data.text == "yes")
+        var senderText = msg.events[i].message_create.message_data.text;
+        var senderID = msg.events[i].message_create.sender_id;
+        //console.log(senderID + " sent: " + senderText);
+
+        if(senderText == "Yes" || senderText == "yes")
         {
-          fs.readdir('./Users', (err, files) => 
-          {
-            for(var j = 0; j < files.length; j++)
-            {
-              var id = fs.readFileSync('./Users' + '/' + files[j] + "/twitterID.txt", 'utf-8');
-              /*if(id == msg.events[i].message_create.sender_id)
-              {
-                //console.log(files[j] + " just confirmed his account!");
-              }*/
-            }
-          });
+          console.log("pushed");
+          confirmedUsers.push(senderID);
         }
-        else if(msg.events[i].message_create.message_data.text == "No" || msg.events[i].message_create.message_data.text == "no")
+        /*else if(senderText == "No" || senderText == "no")
         {
           fs.readdir('./Users', (err, files) => 
           {
             for(var j = 0; j < files.length; j++)
             {
               var id = fs.readFileSync('./Users' + '/' + files[j] + "/twitterID.txt", 'utf-8');
-              /*if(id == msg.events[i].message_create.sender_id)
+              if(id == msg.events[i].message_create.sender_id)
               {
                 console.log(files[j] + " did not confirm is account! Deleting...");
                 rimraf.sync('./Users/' + files[j]);
-              }*/
+              }
             }
           });
-        }
+          }*/
+      }
+      for(var j = 0; j < confirmedUsers.length; j++)
+      {
+        
       }
     }
   });
 }
 
+setTimeout(linkUsersToID, 0);
+
+function linkUsersToID()
+{
+  fs.readdir('./Users', (err, files) => 
+    {
+        for(var i = 0; i < files.length; i++)
+        {
+          console.log(fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'));
+        }
+    });
+}
