@@ -1,4 +1,7 @@
 Users
-*.txt
 *.cmd
 *.json
+data.txt
+queue.txt
+sendAuth.txt
+update.txt
