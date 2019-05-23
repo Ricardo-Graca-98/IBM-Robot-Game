@@ -16,6 +16,8 @@
         }
     </style>
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <title>IBM - NiceBots</title>
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
 </head>
 <body>
 <svg id="monthlyUsers" width="600" height="500"></svg>
@@ -38,7 +40,6 @@
            .attr("y", 50)
            .attr("font-size", "24px")
            .text("Users joining each month")
-
         var x = d3.scaleBand().range([0, width]).padding(0.4),
             y = d3.scaleLinear().range([height, 0]);
 
