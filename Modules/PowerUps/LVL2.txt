@@ -1,0 +1,3 @@
+Weapon 2
+60
+This weapon is bla bla bla

@@ -1,0 +1,3 @@
+PowerUp 1
+40
+This weapon is bla bla bla
