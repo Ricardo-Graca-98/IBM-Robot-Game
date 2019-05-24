@@ -43,32 +43,32 @@ function sendMessage(ID)
           'type': 'message_create',
           'message_create': 
           {
-              'target': 
+            'target': 
+            {
+              'recipient_id': ID
+            },
+            'message_data': 
+            {
+              'text': 'Hello! I\'m here to confirm that you created an account in our game! Please type yes or no to confirm' ,
+              'quick_reply': 
               {
-                'recipient_id': ID
-              },
-              'message_data': 
-              {
-                'text': 'Hello! I\'m here to confirm that you created an account in our game! Please type yes or no to confirm' ,
-                'quick_reply': 
-                {
-                  'type': 'options',
-                  'options': 
-                  [
-                    {
-                      'label' : 'Yes',
-                      'description' : 'Confirm it was you',
-                      'metadata' : 'external_id_1'
-                    },
-                    {
-                      'label' : 'No',
-                      'description' : 'It wasn\'t me',
-                      'metadata' : 'external_id_2'
-                    }
-                  ]
-                }
+                'type': 'options',
+                'options': 
+                [
+                  {
+                    'label' : 'Yes',
+                    'description' : 'Confirm it was you',
+                    'metadata' : 'external_id_1'
+                  },
+                  {
+                    'label' : 'No',
+                    'description' : 'It wasn\'t me',
+                    'metadata' : 'external_id_2'
+                  }
+                ]
               }
-        }
+            }
+          }
       }
   }
 
