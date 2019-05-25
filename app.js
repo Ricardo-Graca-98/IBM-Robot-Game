@@ -65,7 +65,7 @@ function handler (req, res)
         if(index < 0)
         {
             console.log("Add to queue");
-            fs.appendFileSync('queue.txt', requestText + " \n");
+            fs.appendFileSync('queue.txt', requestText + " ");
             runScript('./Fight.js', function (err)
             {
             if (err) throw err;
