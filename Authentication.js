@@ -38,38 +38,38 @@ function sendMessage(ID)
 {
   var replyTo = 
   {
-      'event': 
+    'event': 
+    {
+      'type': 'message_create',
+      'message_create': 
       {
-          'type': 'message_create',
-          'message_create': 
+        'target': 
+        {
+          'recipient_id': ID
+        },
+        'message_data': 
+        {
+          'text': 'Hello! I\'m here to confirm that you created an account in our game! Please type yes or no to confirm' ,
+          'quick_reply': 
           {
-            'target': 
-            {
-              'recipient_id': ID
-            },
-            'message_data': 
-            {
-              'text': 'Hello! I\'m here to confirm that you created an account in our game! Please type yes or no to confirm' ,
-              'quick_reply': 
+            'type': 'options',
+            'options': 
+            [
               {
-                'type': 'options',
-                'options': 
-                [
-                  {
-                    'label' : 'Yes',
-                    'description' : 'Confirm it was you',
-                    'metadata' : 'external_id_1'
-                  },
-                  {
-                    'label' : 'No',
-                    'description' : 'It wasn\'t me',
-                    'metadata' : 'external_id_2'
-                  }
-                ]
+                'label' : 'Yes',
+                'description' : 'Confirm it was you',
+                'metadata' : 'external_id_1'
+              },
+              {
+                'label' : 'No',
+                'description' : 'It wasn\'t me',
+                'metadata' : 'external_id_2'
               }
-            }
+            ]
           }
+        }
       }
+    }
   }
 
   T.post('direct_messages/events/new', replyTo, function(err,data,response)
@@ -116,7 +116,7 @@ function checkIfWorks()
               }
             }
           });
-          }*/
+        }*/
       }
       for(var j = 0; j < confirmedUsers.length; j++)
       {
