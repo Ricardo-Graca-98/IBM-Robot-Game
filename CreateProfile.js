@@ -111,7 +111,8 @@ function addUser()
         };
 
         //Gets the information from the Personality Insight tool belonging to the Watson AI
-        personalityInsights.profile(profileParams, function(error, profile) {
+        personalityInsights.profile(profileParams, function(error, profile) 
+        {
             if (error) 
             {
                 console.log("FAILED! Error code - " + error.code);
@@ -184,6 +185,6 @@ function processText()
     setTimeout(addUser, 0);
 }
 
-Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
+Date.prototype.getUnixTime = function() {return this.getTime()/1000|0};
 if(!Date.now) Date.now = function() { return new Date(); }
 Date.time = function() { return Date.now().getUnixTime(); }
