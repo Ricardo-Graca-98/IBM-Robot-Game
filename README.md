@@ -12,3 +12,10 @@ The game uses IBM's Watson Personality Insights AI to build a profile from peopl
 To install the server just make a copy of the repository within your computer and be sure to have [NodeJS installed](https://nodejs.org/en/download/) too!
 
 After that **be sure** to install all these **npm modules**:
+```
+npm install twitter
+npm install rimraf
+npm install twit
+npm install socket.io
+npm install http
+```
