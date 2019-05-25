@@ -1,4 +1,4 @@
-# **NiceBots! - IBM**
+# **NiceBots! - IBM** ![Image](https://upload.wikimedia.org/wikipedia/en/thumb/0/00/IBM_Watson_Logo_2017.png/220px-IBM_Watson_Logo_2017.png)
 Created by Ricardo Graça, Rosa Baker, Aaron Desoiza, Adam Hartnell
 
 ---
