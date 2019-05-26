@@ -16,10 +16,10 @@ var T = new Twit({
   //Authentication into Twitter
 var client = new Twitter
 ({
-    consumer_key: ParsedCredentials.twitter[0].consumer_key,
-    consumer_secret: ParsedCredentials.twitter[0].consumer_secret,
-    access_token_key: ParsedCredentials.twitter[0].access_token_key,
-    access_token_secret: ParsedCredentials.twitter[0].access_token_secret
+    consumer_key: ParsedCredentials.twitter[2].consumer_key,
+    consumer_secret: ParsedCredentials.twitter[2].consumer_secret,
+    access_token_key: ParsedCredentials.twitter[2].access_token_key,
+    access_token_secret: ParsedCredentials.twitter[2].access_token_secret
 });
 
 setTimeout(setup, 0);
@@ -33,6 +33,7 @@ function setup()
       console.log(parsedIDs);
       setTimeout(sendMessage, 0, parsedIDs[i]);
     }
+    fs.writeFileSync("sendAuth.txt", "");
 }
 
 function sendMessage(ID)
@@ -75,7 +76,14 @@ function sendMessage(ID)
 
   T.post('direct_messages/events/new', replyTo, function(err,data,response)
   {
-      console.info(data);
+      if(err)
+      {
+        console.log("error!");
+      }
+      else
+      {
+        console.log("success");
+      }
   });
 }
 
@@ -108,10 +116,6 @@ function checkIfWorks()
         {
           linkUsersToID(senderID, 1);
         }
-      }
-      for(var j = 0; j < confirmedUsers.length; j++)
-      {
-        
       }
     }
   });
