@@ -91,7 +91,7 @@ function handler (req, res)
         if(fs.existsSync('./Users/' + stats[0]))
         {
             var debug = 1;
-            fs.writeFileSync("idealStats.txt", stats[1] + " " + stats[2] + " " + stats[3] + " " + stats[4]);
+            fs.writeFileSync('./Users/' + stats[0] + 'idealStats.txt', stats[1] + " " + stats[2] + " " + stats[3] + " " + stats[4]);
         }
         return res.end("Adding stats to " + stats[0] + "! " + debug);
     }
