@@ -91,7 +91,7 @@ function handler (req, res)
         {
             fs.writeFileSync("idealStats.txt", stats[1] + " " + stats[2] + " " + stats[3] + " " + stats[4]);
         }
-        return res.end("Adding stats!");
+        return res.end("Adding stats to " + stats[0] + "!");
     }
     else if(requestChar == null)
     {
