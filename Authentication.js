@@ -108,13 +108,13 @@ function checkIfWorks()
 
         if(senderText == "Yes" || senderText == "yes")
         {
-          console.log("pushed");
           linkUsersToID(senderID, 0);
           console.log(senderID + " is now confirmed!");
         }
         else if(senderText == "No" || senderText == "no")
         {
           linkUsersToID(senderID, 1);
+          console.log(senderID + " is now deleted!");
         }
       }
     }
@@ -129,13 +129,15 @@ function linkUsersToID(ID, DELETE)
         {
           if(ID == fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'))
           {
-            if(DELETE)
+            if(DELETE == 1)
             {
+              console.log("Deleting...");
               rimraf.sync('./Users/' + files[i]);
             }
             else
             {
-              fs.writeFileSync('./Users/' + files[i] + '/auth.txt', 1);
+              console.log("Authenticating...");
+              fs.writeFileSync('./Users/' + files[i] + '/auth.txt', "1");
             }
           }
         }
