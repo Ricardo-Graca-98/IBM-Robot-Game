@@ -104,15 +104,16 @@ function checkIfWorks()
       {
         var senderText = msg.events[i].message_create.message_data.text;
         var senderID = msg.events[i].message_create.sender_id;
-        console.log(senderID + " sent: " + senderText);
 
         if(senderText == "Yes" || senderText == "yes")
         {
+          console.log(senderID + " sent: " + senderText);
           linkUsersToID(senderID, 0);
           console.log(senderID + " is now confirmed!");
         }
         else if(senderText == "No" || senderText == "no")
         {
+          console.log(senderID + " sent: " + senderText);
           linkUsersToID(senderID, 1);
           console.log(senderID + " is now deleted!");
         }
