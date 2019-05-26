@@ -109,13 +109,13 @@ function checkIfWorks()
         {
           console.log(senderID + " sent: " + senderText);
           linkUsersToID(senderID, 0);
-          console.log(senderID + " is now confirmed!");
+          console.log(senderID + " is being confirmed!");
         }
         else if(senderText == "No" || senderText == "no")
         {
           console.log(senderID + " sent: " + senderText);
           linkUsersToID(senderID, 1);
-          console.log(senderID + " is now deleted!");
+          console.log(senderID + " is being deleted!");
         }
       }
     }
@@ -128,18 +128,17 @@ function linkUsersToID(ID, DELETE)
     {
         for(var i = 0; i < files.length; i++)
         {
-          console.log(ID + " =? " + fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'));
           if(ID == fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'))
           {
-            console.log("yes!!");
+            console.log(ID + " = " + fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'));
             if(DELETE == 1)
             {
-              console.log("Deleting...");
+              console.log("Deleted!");
               rimraf.sync('./Users/' + files[i]);
             }
             else
             {
-              console.log("Authenticating...");
+              console.log("Confirmed!");
               fs.writeFileSync('./Users/' + files[i] + '/auth.txt', "1");
             }
           }
