@@ -87,11 +87,13 @@ function handler (req, res)
     {
         var stats = requestText.split("~");
         console.log(stats[0]);
+        var debug = 0;
         if(fs.existsSync('./Users/' + stats[0]))
         {
+            var debug = 1;
             fs.writeFileSync("idealStats.txt", stats[1] + " " + stats[2] + " " + stats[3] + " " + stats[4]);
         }
-        return res.end("Adding stats to " + stats[0] + "!");
+        return res.end("Adding stats to " + stats[0] + "! " + debug);
     }
     else if(requestChar == null)
     {
