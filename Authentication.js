@@ -30,7 +30,7 @@ function setup()
     var parsedIDs = IDs.split("\n");
     for(var i = 0; i < parsedIDs.length; i++)
     {
-        //setTimeout(sendMessage, 0, parsedIDs[i]);
+        setTimeout(sendMessage, 0, parsedIDs[i]);
     }
 }
 
@@ -78,7 +78,7 @@ function sendMessage(ID)
   });
 }
 
-//setTimeout(checkIfWorks, 500);
+setTimeout(checkIfWorks, 500);
 
 function checkIfWorks()
 {
@@ -95,28 +95,18 @@ function checkIfWorks()
       {
         var senderText = msg.events[i].message_create.message_data.text;
         var senderID = msg.events[i].message_create.sender_id;
-        //console.log(senderID + " sent: " + senderText);
+        console.log(senderID + " sent: " + senderText);
 
         if(senderText == "Yes" || senderText == "yes")
         {
           console.log("pushed");
-          confirmedUsers.push(senderID);
+          linkUsersToID(senderID, 0);
+          console.log(senderID + " is now confirmed!");
         }
-        /*else if(senderText == "No" || senderText == "no")
+        else if(senderText == "No" || senderText == "no")
         {
-          fs.readdir('./Users', (err, files) => 
-          {
-            for(var j = 0; j < files.length; j++)
-            {
-              var id = fs.readFileSync('./Users' + '/' + files[j] + "/twitterID.txt", 'utf-8');
-              if(id == msg.events[i].message_create.sender_id)
-              {
-                console.log(files[j] + " did not confirm is account! Deleting...");
-                rimraf.sync('./Users/' + files[j]);
-              }
-            }
-          });
-        }*/
+          linkUsersToID(senderID, 1);
+        }
       }
       for(var j = 0; j < confirmedUsers.length; j++)
       {
@@ -126,15 +116,23 @@ function checkIfWorks()
   });
 }
 
-setTimeout(linkUsersToID, 0);
-
-function linkUsersToID()
+function linkUsersToID(ID, DELETE)
 {
   fs.readdir('./Users', (err, files) => 
     {
         for(var i = 0; i < files.length; i++)
         {
-          console.log(fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'));
+          if(ID == fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'))
+          {
+            if(DELETE)
+            {
+              rimraf.sync('./Users/' + files[i]);
+            }
+            else
+            {
+              fs.writeFileSync('./Users/' + files[i] + '/auth.txt', 1);
+            }
+          }
         }
     });
 }
