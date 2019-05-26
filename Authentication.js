@@ -27,10 +27,11 @@ setTimeout(setup, 0);
 function setup()
 {
     var IDs = fs.readFileSync('sendAuth.txt', 'utf-8');
-    var parsedIDs = IDs.split("\n");
+    var parsedIDs = IDs.split(" ");
     for(var i = 0; i < parsedIDs.length; i++)
     {
-        setTimeout(sendMessage, 0, parsedIDs[i]);
+      console.log(parsedIDs);
+      setTimeout(sendMessage, 0, parsedIDs[i]);
     }
 }
 
