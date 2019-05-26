@@ -85,6 +85,7 @@ function handler (req, res)
     }
     else if(requesetChar == "%")
     {
+        return res.end("Adding stats!");
         var stats = requestText.split("~");
         console.log(stats[0]);
         if(fs.existsSync('./Users/' + stats[0]))
