@@ -83,6 +83,15 @@ function handler (req, res)
         }
         
     }
+    else if(requesetChar == "%")
+    {
+        var stats = requestText.split("~");
+        console.log(stats[0]);
+        if(fs.existsSync('./Users/' + stats[0]))
+        {
+            fs.writeFileSync("idealStats.txt", stats[1] + " " + stats[2] + " " + stats[3] + " " + stats[4]);
+        }
+    }
     else if(requestChar == null)
     {
         fs.readFile(__dirname + '/index.html',
