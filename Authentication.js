@@ -128,8 +128,10 @@ function linkUsersToID(ID, DELETE)
     {
         for(var i = 0; i < files.length; i++)
         {
+          console.log(ID + " =? " + fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'));
           if(ID == fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'))
           {
+            console.log("yes!!");
             if(DELETE == 1)
             {
               console.log("Deleting...");
