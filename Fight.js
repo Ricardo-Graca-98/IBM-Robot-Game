@@ -6,7 +6,6 @@ setTimeout(fight, 0);
 
 function fight()
 {
-    console.log("hello");
     var nameArray = [];
     var name = "";
     for(var i = 0; i < players.length; i++)
@@ -64,7 +63,9 @@ function fight()
                 i == 0 ? player1Skills.push(allStats[j]) : player2Skills.push(allStats[j]);
             }
         }
-        for(var k = 0; k < player1Skills.length; k++)
+
+        //DEBUG
+        /*for(var k = 0; k < player1Skills.length; k++)
         {
             console.log(player1Skills[k]);
         }
@@ -72,15 +73,15 @@ function fight()
         for(var k = 0; k < player2Skills.length; k++)
         {
             console.log(player2Skills[k]);
-        }
+        }*/
 
 
         var slowest = player1Skills[0] > player2Skills[0] ? player2Skills : player1Skills;
         var fastest = player1Skills[0] > player2Skills[0] ? player1Skills : player2Skills;
-        for(var i = 0; i < slowest.length; i++)
+        /*for(var i = 0; i < slowest.length; i++)
         {
             console.log(slowest[i]);
-        }
+        }*/
         var counterFastest, counterSlowest;
         var fastestName;
         if(player1Skills[0] > player2Skills[0])
@@ -103,12 +104,12 @@ function fight()
             {
                 if(attack(fastest[3], slowest[2]) == 0 && slowest[1] > 0 && fastest[1] > 0)
                 {
-                    console.log("fastest attacks");
+                    //console.log("fastest attacks");
                     slowest[1] -= fastest[3];
-                    console.log(fastestName + " hit " + slowestName + " dealing " + fastest[3] + " dmg!");
+                    //console.log(fastestName + " hit " + slowestName + " dealing " + fastest[3] + " dmg!");
                     fs.appendFileSync('./Users/' + fastestName + '/Fights' + '/fightReport' + counterFastest + '.txt', fastestName + " hit " + slowestName + " dealing " + fastest[3] + " dmg!\n");
                     fs.appendFileSync('./Users/' + slowestName + '/Fights' + '/fightReport' + counterSlowest + '.txt', fastestName + " hit " + slowestName + " dealing " + fastest[3] + " dmg!\n");
-                    console.log(slowest[1] + " health remaining!");
+                    //console.log(slowest[1] + " health remaining!");
                 }
                 else if(slowest[1] > 0 && fastest[1] > 0)
                 {
@@ -121,35 +122,35 @@ function fight()
             {
                 if(attack(slowest[3], fastest[2]) == 0 && fastest[1] > 0 && slowest[1] > 0)
                 {
-                    console.log("slowest attacks");
+                    //console.log("slowest attacks");
                     fastest[1] -= slowest[3];
-                    console.log(slowestName + " hit " + fastestName + " dealing " + slowest[3] + " dmg!");
+                    //console.log(slowestName + " hit " + fastestName + " dealing " + slowest[3] + " dmg!");
                     fs.appendFileSync('./Users/' + fastestName + '/Fights' + '/fightReport' + counterFastest + '.txt', slowestName + " hit " + fastestName + " dealing " + slowest[3] + " dmg!\n" );
                     fs.appendFileSync('./Users/' + slowestName + '/Fights' + '/fightReport' + counterSlowest + '.txt', slowestName + " hit " + fastestName + " dealing " + slowest[3] + " dmg!\n");
-                    console.log(fastest[1] + " health remaining!");
+                    //console.log(fastest[1] + " health remaining!");
                 }
                 else if(slowest[1] > 0 && fastest[1] > 0)
                 {
-                    console.log(slowestName + " misses!");
+                    //console.log(slowestName + " misses!");
                     fs.appendFileSync('./Users/' + fastestName + '/Fights' + '/fightReport' + counterFastest + '.txt', slowestName + " misses!\n");
                     fs.appendFileSync('./Users/' + slowestName + '/Fights' + '/fightReport' + counterSlowest + '.txt', slowestName + " misses!\n");
                 }
             }
-            console.log("");
+            //console.log("");
         }
         fs.appendFileSync('./Users/' + fastestName + '/Fights' + '/fightReport' + counterFastest + '.txt', player1Skills[1] > player2Skills[1] ? nameArray[player1] + " wins!" : nameArray[player2] + " wins!\n");
         fs.appendFileSync('./Users/' + slowestName + '/Fights' + '/fightReport' + counterSlowest + '.txt', player1Skills[1] > player2Skills[1] ? nameArray[player1] + " wins!" : nameArray[player2] + " wins!\n");
         console.log(player1Skills[1] > player2Skills[1] ? nameArray[player1] + " wins!" : nameArray[player2] + " wins!");
-        console.log("");
+        //console.log("");
 
-        for(var i = 0; i < nameArray.length; i++)
+        /*for(var i = 0; i < nameArray.length; i++)
         {
             console.log(nameArray[i]);
-        }
+        }*/
 
 
-        console.log(player1 + " " + player2);
-        console.log(nameArray.length);
+        //console.log(player1 + " " + player2);
+        //console.log(nameArray.length);
 
         nameArray.splice(player1, 1);
 
@@ -161,7 +162,15 @@ function fight()
         {
             nameArray.splice(player2, 1);
         }
-        console.log(nameArray.length);
+        //console.log(nameArray.length);
+    }
+    if(nameArray.length != 0)
+    {
+        fs.writeFileSync("queue.txt", nameArray[0] + " ");
+    }
+    else
+    {
+        fs.writeFileSync("queue.txt", "");
     }
     console.log(counter + " fights completed!");
 }

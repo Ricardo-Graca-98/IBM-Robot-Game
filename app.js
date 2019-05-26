@@ -61,6 +61,7 @@ function handler (req, res)
             fs.appendFileSync('queue.txt',"");
         }
         var fightList = fs.readFileSync('queue.txt', 'utf-8');
+        console.log(fightList);
         var index = fightList.search(requestText);
         if(index < 0)
         {
@@ -74,6 +75,10 @@ function handler (req, res)
         }
         else
         {
+            runScript('./Fight.js', function (err)
+            {
+            if (err) throw err;
+            });
             return res.end("Already in the queue!");
         }
         
