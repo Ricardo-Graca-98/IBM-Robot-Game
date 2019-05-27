@@ -203,14 +203,14 @@ function checkUpdate()
 
 function checkAuth()
 {
-    /*if (fs.existsSync('sendAuth.txt')) 
+    if (fs.existsSync('sendAuth.txt')) 
     {
         console.log("Runninng Authentication.js");
         runScript('./Authentication.js', function (err) 
             {
                 if (err) throw err;
             });
-    }*/
+    }
 }
 
 function check()
