@@ -12,7 +12,7 @@ setTimeout(checkAuth, 0);
 setTimeout(checkUpdate, 0);
 setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
-//setInterval(checkAuth, 60000); REMOVE THESE AFTER TESTING
+setInterval(checkAuth, 360);
 
 app.listen(80);
 
@@ -238,12 +238,10 @@ function runScript(scriptPath, callback) {
 var clients = 0;
 io.sockets.on('connection', function (socket) 
 {
-    console.log("User connected!");
     ++clients;
     io.sockets.emit('users_count', clients);
     socket.on('disconnect', function () 
     {
-        console.log("User disconnected!");
         --clients;
     });
 });
