@@ -15,18 +15,120 @@
             fill: #E770FE;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <title>IBM - NiceBots</title>
     <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
 </head>
 <body>
-<svg id="monthlyUsers" width="600" height="500"></svg>
-<svg id="allUsers" width="600" height="500"></svg>
-<svg id="personalityStats" width="500" height="400"></svg>
+    <svg id="monthlyUsers" width="600" height="500"></svg>
+    <svg id="allUsers" width="600" height="500"></svg>
+    <svg id="personalityStats" width="500" height="400"></svg>
+    <h1 id="data">Last request sent - </h1>
+    <div>
+        <h1>Leaderboard</h1>
+        <h2>Openness</h2>
+        <div>
+            <p id="OP1">1.</p>
+            <p id="OP2">2.</p>
+            <p id="OP3">3.</p>
+            <p id="OP4">4.</p>
+            <p id="OP5">5.</p>
+        </div>
+        <h2>Conscientiousness</h2>
+        <div>
+            <p id="CO1">1.</p>
+            <p id="CO2">2.</p>
+            <p id="CO3">3.</p>
+            <p id="CO4">4.</p>
+            <p id="CO5">5.</p>
+        </div>
+        <h2>Emotional Range</h2>
+        <div>
+            <p id="ER1">1.</p>
+            <p id="ER2">2.</p>
+            <p id="ER3">3.</p>
+            <p id="ER4">4.</p>
+            <p id="ER5">5.</p>
+        </div>
+        <h2>Extraversion</h2>
+        <div>
+            <p id="EX1">1.</p>
+            <p id="EX2">2.</p>
+            <p id="EX3">3.</p>
+            <p id="EX4">4.</p>
+            <p id="EX5">5.</p>
+        </div>
+        <h2>Agreeableness</h2>
+        <div>
+            <p id="AG1">1.</p>
+            <p id="AG2">2.</p>
+            <p id="AG3">3.</p>
+            <p id="AG4">4.</p>
+            <p id="AG5">5.</p>
+        </div>
+    </div>
 <script>
     setTimeout(monthlyUsers, 100);
     setTimeout(allUsers, 250);
     setTimeout(personalityStats, 500);
+
+    var socket = io('http://localhost:800');
+
+    socket.on('data', function (data)
+    {
+        $('#data').text("Last request sent - " + data["text"]);
+        console.log(data["text"]);
+    });
+
+    socket.on('opennessData', function (data)
+    {
+        $('#OP1').text("1º - " + data["a"]);
+        $('#OP2').text("2º - " + data["b"]);
+        $('#OP3').text("3º - " + data["c"]);
+        $('#OP4').text("4º - " + data["d"]);
+        $('#OP5').text("5º - " + data["e"]);
+    });
+
+    socket.on('conscientiousnessData', function (data)
+    {
+        $('#CO1').text("1º - " + data["a"]);
+        $('#CO2').text("2º - " + data["b"]);
+        $('#CO3').text("3º - " + data["c"]);
+        $('#CO4').text("4º - " + data["d"]);
+        $('#CO5').text("5º - " + data["e"]);
+    });
+
+    socket.on('emotionalRangeData', function (data)
+    {
+        $('#ER1').text("1º - " + data["a"]);
+        $('#ER2').text("2º - " + data["b"]);
+        $('#ER3').text("3º - " + data["c"]);
+        $('#ER4').text("4º - " + data["d"]);
+        $('#ER5').text("5º - " + data["e"]);
+    });
+
+    socket.on('extraversionData', function (data)
+    {
+        $('#EX1').text("1º - " + data["a"]);
+        $('#EX2').text("2º - " + data["b"]);
+        $('#EX3').text("3º - " + data["c"]);
+        $('#EX4').text("4º - " + data["d"]);
+        $('#EX5').text("5º - " + data["e"]);
+    });
+
+    socket.on('agreeablenessData', function (data)
+    {
+        $('#AG1').text("1º - " + data["a"]);
+        $('#AG2').text("2º - " + data["b"]);
+        $('#AG3').text("3º - " + data["c"]);
+        $('#AG4').text("4º - " + data["d"]);
+        $('#AG5').text("5º - " + data["e"]);
+    });
+
+
+
     function monthlyUsers()
     {
             var svg = d3.select("#monthlyUsers"),
