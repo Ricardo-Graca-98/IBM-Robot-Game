@@ -12,7 +12,7 @@ setTimeout(checkAuth, 0);
 setTimeout(checkUpdate, 0);
 setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
-setInterval(checkAuth, 360);
+setInterval(checkAuth, 36000);
 
 app.listen(80);
 
