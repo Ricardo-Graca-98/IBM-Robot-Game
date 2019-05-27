@@ -8,13 +8,14 @@ require('dns').lookup(require('os').hostname(), function (err, add, fam) {
   })
 var create = false;
 
+setTimeout(updateLeaderboards, 10000);
 setTimeout(checkAuth, 0);
 setTimeout(checkUpdate, 0);
 setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
-setInterval(checkAuth, 36000);
+setInterval(checkAuth, 360000);
 
-app.listen(80);
+app.listen(800);
 
 function handler (req, res) 
 {
@@ -27,12 +28,17 @@ function handler (req, res)
     //Store all requests
     var time = new Date;
     console.log(req.url + " - " + time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear() + "\n");
-    fs.appendFile('data.txt', req.url + " - " + time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear() + "\n", function(err){
-        if(err)
-        {
-            throw err;
-        }
-    });
+    
+    if(req.url != "/" && req.url != "/favicon.ico")
+    {
+        fs.appendFile('data.txt', req.url + " - " + time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear() + "\n", function(err){
+            if(err)
+            {
+                throw err;
+            }
+        });
+    }
+    
 
     //Separate the CODE from the TEXT
     for(var j = 2; j < req.url.length; j++)
@@ -178,6 +184,14 @@ function handler (req, res)
     /*************************************DATA HANDLING OVER*****************************************/
 }
 
+function updateLeaderboards()
+{
+    runScript('./Leaderboard.js', function (err)
+    {
+        if (err) throw err;
+    })
+}
+
 function checkUpdate()
 {
     console.log("Runninng UpdateWeekly.js");
@@ -189,14 +203,14 @@ function checkUpdate()
 
 function checkAuth()
 {
-    if (fs.existsSync('sendAuth.txt')) 
+    /*if (fs.existsSync('sendAuth.txt')) 
     {
         console.log("Runninng Authentication.js");
         runScript('./Authentication.js', function (err) 
             {
                 if (err) throw err;
             });
-    }
+    }*/
 }
 
 function check()
@@ -236,13 +250,88 @@ function runScript(scriptPath, callback) {
     });
 }
 
+setInterval(socketUpdate, 500);
+
+var exportData = "";
+var opennessArray = "";
+var conscientiousnessArray = "";
+var emotionalRangeArray = "";
+var extraversionArray = "";
+var agreeablenessArray = "";
+
+function socketUpdate()
+{
+    var data = fs.readFileSync("./data.txt", 'utf-8');
+    var splitedData = data.split("\n");
+    exportData = splitedData;
+    exportData = exportData[exportData.length-2];
+    data = fs.readFileSync("./Leaderboards/Agreeableness.txt", 'utf-8');
+    opennessArray = data.split("\n");
+    data = fs.readFileSync("./Leaderboards/Conscientiousness.txt", 'utf-8');
+    conscientiousnessArray = data.split("\n");
+    data = fs.readFileSync("./Leaderboards/EmotionalRange.txt", 'utf-8');
+    emotionalRangeArray = data.split("\n");
+    data = fs.readFileSync("./Leaderboards/Extraversion.txt", 'utf-8');
+    extraversionArray = data.split("\n");
+    data = fs.readFileSync("./Leaderboards/Agreeableness.txt", 'utf-8');
+    agreeablenessArray = data.split("\n");
+}
+
 var clients = 0;
 io.sockets.on('connection', function (socket) 
 {
-    ++clients;
-    io.sockets.emit('users_count', clients);
-    socket.on('disconnect', function () 
-    {
-        --clients;
-    });
-});
+    setInterval(function(){
+        socket.emit("data", {text: exportData});
+    }, 500);
+    setInterval(function(){
+        socket.emit("opennessData", 
+        {
+            a: opennessArray[0],
+            b: opennessArray[1],
+            c: opennessArray[2],
+            d: opennessArray[3],
+            e: opennessArray[4]
+        });
+    }, 500);
+    setInterval(function(){
+        socket.emit("conscientiousnessData", 
+        {
+            a: conscientiousnessArray[0],
+            b: conscientiousnessArray[1],
+            c: conscientiousnessArray[2],
+            d: conscientiousnessArray[3],
+            e: conscientiousnessArray[4]
+        });
+    }, 500);
+    setInterval(function(){
+        socket.emit("emotionalRangeData", 
+        {
+            a: emotionalRangeArray[0],
+            b: emotionalRangeArray[1],
+            c: emotionalRangeArray[2],
+            d: emotionalRangeArray[3],
+            e: emotionalRangeArray[4]
+        });
+    }, 500);
+    setInterval(function(){
+        socket.emit("extraversionData", 
+        {
+            a: extraversionArray[0],
+            b: extraversionArray[1],
+            c: extraversionArray[2],
+            d: extraversionArray[3],
+            e: extraversionArray[4]
+        });
+    }, 500);
+    setInterval(function(){
+        socket.emit("agreeablenessData", 
+        {
+            a: agreeablenessArray[0],
+            b: agreeablenessArray[1],
+            c: agreeablenessArray[2],
+            d: agreeablenessArray[3],
+            e: agreeablenessArray[4]
+        });
+    }, 500);
+}); 
+
