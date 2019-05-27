@@ -149,7 +149,7 @@ function fight()
 
         var file = fs.readdirSync('./Users/' + fastestName + '/Fights');
         console.log(fastestName + " " + file.length);
-        if(file.length <= 1)
+        if(file.length == 1)
         {
             fs.writeFileSync('./Users/' + fastestName + '/Fights' + '/fightCount.txt', file.length-1);
         }
@@ -160,7 +160,7 @@ function fight()
 
         file = fs.readdirSync('./Users/' + slowestName + '/Fights');
         console.log(slowestName + " " + file.length);
-        if(file.length <= 1)
+        if(file.length == 1)
         {
             fs.writeFileSync('./Users/' + slowestName + '/Fights' + '/fightCount.txt', file.length-1);
         }
