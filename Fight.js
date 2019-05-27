@@ -149,11 +149,25 @@ function fight()
 
         var file = fs.readdirSync('./Users/' + fastestName + '/Fights');
         console.log(fastestName + " " + file.length);
-        fs.writeFileSync('./Users/' + fastestName + '/Fights' + '/fightCount.txt', file.length-1);
+        if(file.length <= 1)
+        {
+            fs.writeFileSync('./Users/' + fastestName + '/Fights' + '/fightCount.txt', file.length-1);
+        }
+        else
+        {
+            fs.writeFileSync('./Users/' + fastestName + '/Fights' + '/fightCount.txt', file.length-2);
+        }
 
         file = fs.readdirSync('./Users/' + slowestName + '/Fights');
         console.log(slowestName + " " + file.length);
-        fs.writeFileSync('./Users/' + slowestName + '/Fights' + '/fightCount.txt', file.length-1);
+        if(file.length <= 1)
+        {
+            fs.writeFileSync('./Users/' + slowestName + '/Fights' + '/fightCount.txt', file.length-1);
+        }
+        else
+        {
+            fs.writeFileSync('./Users/' + slowestName + '/Fights' + '/fightCount.txt', file.length-2);
+        }
 
         nameArray.splice(player1, 1);
 
