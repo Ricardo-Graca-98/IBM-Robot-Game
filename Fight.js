@@ -6,20 +6,13 @@ setTimeout(fight, 0);
 
 function fight()
 {
-    var nameArray = [];
-    var name = "";
-    for(var i = 0; i < players.length; i++)
-    {
-        if(players[i] == ' ')
-        {
-            name = name.replace(/\s/g, '');
-            nameArray.push(name);
-            name = "";
-        }
-        name += players[i];
-    }
-
+    var nameArray = players.split(" ");
     var counter = 0;
+
+    for(var i = 0; i < nameArray; i++)
+    {   
+        console.log(nameArray[i]);
+    }   
 
     //CHANGE FOR A WHILE
     while(nameArray.length > 1)
@@ -141,16 +134,16 @@ function fight()
         fs.appendFileSync('./Users/' + fastestName + '/Fights' + '/fightReport' + counterFastest + '.txt', player1Skills[1] > player2Skills[1] ? nameArray[player1] + " wins!" : nameArray[player2] + " wins!\n");
         fs.appendFileSync('./Users/' + slowestName + '/Fights' + '/fightReport' + counterSlowest + '.txt', player1Skills[1] > player2Skills[1] ? nameArray[player1] + " wins!" : nameArray[player2] + " wins!\n");
         console.log(player1Skills[1] > player2Skills[1] ? nameArray[player1] + " wins!" : nameArray[player2] + " wins!");
-        //console.log("");
 
-        /*for(var i = 0; i < nameArray.length; i++)
-        {
-            console.log(nameArray[i]);
-        }*/
+        console.log("Adding to the reports!! " + fastestName + "|" + slowestName);
 
+        var file = fs.readdirSync('./Users/' + fastestName + '/Fights');
+        console.log(fastestName + " " + file.length);
+        fs.writeFileSync('./Users/' + fastestName + '/Fights' + '/fightCount.txt', file.length-1);
 
-        //console.log(player1 + " " + player2);
-        //console.log(nameArray.length);
+        file = fs.readdirSync('./Users/' + slowestName + '/Fights');
+        console.log(slowestName + " " + file.length);
+        fs.writeFileSync('./Users/' + slowestName + '/Fights' + '/fightCount.txt', file.length-1);
 
         nameArray.splice(player1, 1);
 
@@ -162,15 +155,15 @@ function fight()
         {
             nameArray.splice(player2, 1);
         }
-        //console.log(nameArray.length);
-    }
-    if(nameArray.length != 0)
-    {
-        fs.writeFileSync("queue.txt", nameArray[0] + " ");
-    }
-    else
-    {
-        fs.writeFileSync("queue.txt", "");
+
+        if(nameArray.length != 0)
+        {
+            fs.writeFileSync("queue.txt", nameArray[0] + " ");
+        }
+        else
+        {
+            fs.writeFileSync("queue.txt", "");
+        }
     }
     console.log(counter + " fights completed!");
 }
