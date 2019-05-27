@@ -52,6 +52,7 @@ function handler (req, res)
         {
             fs.appendFileSync('add.txt', requestText + " \n");
             create = true;
+            setInterval(checkAuth, 5000);
             return res.end("User creation in progress!");
         }
     }
