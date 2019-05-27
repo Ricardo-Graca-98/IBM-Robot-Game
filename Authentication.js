@@ -124,24 +124,22 @@ function checkIfWorks()
 
 function linkUsersToID(ID, DELETE)
 {
-  fs.readdir('./Users', (err, files) => 
+  var files = fs.readdirSync('./Users');
+  for(var i = 0; i < files.length; i++)
+  {
+    if(ID == fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'))
     {
-        for(var i = 0; i < files.length; i++)
-        {
-          if(ID == fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'))
-          {
-            console.log(ID + " = " + fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'));
-            if(DELETE == 1)
-            {
-              console.log("Deleted!");
-              rimraf.sync('./Users/' + files[i]);
-            }
-            else
-            {
-              console.log("Confirmed!");
-              fs.writeFileSync('./Users/' + files[i] + '/auth.txt', "1");
-            }
-          }
-        }
-    });
+      console.log(ID + " = " + fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'));
+      if(DELETE == 1)
+      {
+        console.log("Deleted!");
+        rimraf.sync('./Users/' + files[i]);
+      }
+      else
+      {
+        console.log("Confirmed!");
+        fs.writeFileSync('./Users/' + files[i] + '/auth.txt', "1");
+      }
+    }
+  }
 }
