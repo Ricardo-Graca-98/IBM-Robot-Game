@@ -6,15 +6,25 @@ setTimeout(fight, 0);
 
 function fight()
 {
-    var nameArray = players.split(" ");
     var counter = 0;
+    var nameArray = [];
+    var name = "";
+    for(var i = 0; i < players.length; i++)
+    {
+        if(players[i] == ' ')
+        {
+            name = name.replace(/\s/g, '');
+            nameArray.push(name);
+            name = "";
+        }
+        name += players[i];
+    }
 
     for(var i = 0; i < nameArray; i++)
     {   
         console.log(nameArray[i]);
     }   
 
-    //CHANGE FOR A WHILE
     while(nameArray.length > 1)
     {
         counter++;
