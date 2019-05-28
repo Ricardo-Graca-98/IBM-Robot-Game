@@ -265,7 +265,7 @@ function socketUpdate()
     var splitedData = data.split("\n");
     exportData = splitedData;
     exportData = exportData[exportData.length-2];
-    data = fs.readFileSync("./Leaderboards/Agreeableness.txt", 'utf-8');
+    data = fs.readFileSync("./Leaderboards/Openness.txt", 'utf-8');
     opennessArray = data.split("\n");
     data = fs.readFileSync("./Leaderboards/Conscientiousness.txt", 'utf-8');
     conscientiousnessArray = data.split("\n");
