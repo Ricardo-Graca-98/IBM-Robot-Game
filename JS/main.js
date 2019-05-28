@@ -2,8 +2,8 @@ setTimeout(monthlyUsers, 100);
 setTimeout(allUsers, 250);
 setTimeout(personalityStats, 500);
 
-var socket = io('http://2.24.190.83:80');
-//var socket = io('http://localhost:800');
+//var socket = io('http://2.24.190.83:80');
+var socket = io('http://localhost:800');
 
 socket.on('data', function (data)
 {
