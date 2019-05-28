@@ -48,8 +48,6 @@ function handler (req, res)
         requestText += req.url[j];
     }
 
-    console.log("url requested - " + req.url + " /CSS/style.css");
-
     /*************************************DATA HANDLING*********************************************/
 
     if(requestChar == '@')
@@ -155,13 +153,6 @@ function handler (req, res)
                 fs.appendFileSync('./Users/' + name + '/robotStats.txt', "/");
             }
         }
-    }
-    else if(req.url == "/CSS/style.css")
-    {
-        console.log("----------------------------------------------");
-        res.writeHead(200, {'Content-type' : 'text/css'});
-        var fileContents = fs.readFileSync('./CSS/style.css', {encoding: 'utf8'});
-        res.write(fileContents);
     }
     else if(requestChar == null)
     {
