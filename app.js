@@ -14,8 +14,10 @@ setTimeout(checkUpdate, 0);
 setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
 setInterval(checkAuth, 360000);
+setInterval(updateCSV, 60000);
+setTimeout(updateCSV, 0);
 
-app.listen(80);
+app.listen(800);
 
 function handler (req, res) 
 {
@@ -45,6 +47,8 @@ function handler (req, res)
     {
         requestText += req.url[j];
     }
+
+    console.log("url requested - " + req.url + " /CSS/style.css");
 
     /*************************************DATA HANDLING*********************************************/
 
@@ -151,6 +155,13 @@ function handler (req, res)
                 fs.appendFileSync('./Users/' + name + '/robotStats.txt', "/");
             }
         }
+    }
+    else if(req.url == "/CSS/style.css")
+    {
+        console.log("----------------------------------------------");
+        res.writeHead(200, {'Content-type' : 'text/css'});
+        var fileContents = fs.readFileSync('./CSS/style.css', {encoding: 'utf8'});
+        res.write(fileContents);
     }
     else if(requestChar == null)
     {
@@ -275,6 +286,33 @@ function socketUpdate()
     extraversionArray = data.split("\n");
     data = fs.readFileSync("./Leaderboards/Agreeableness.txt", 'utf-8');
     agreeablenessArray = data.split("\n");
+}
+
+function updateCSV()
+{
+    var averageStats = [0,0,0,0,0];
+    var users = 0;
+    var files = fs.readdirSync('./Users');
+    for(var i = 0; i < files.length; i++)
+    {
+        users++;
+        var readStats = fs.readFileSync("./Users/" + files[i] + "/stats.txt", "utf-8");
+        var split = readStats.split(" ");
+        for(var j = 0; j < averageStats.length; j++)
+        {
+            averageStats[j] = parseInt(averageStats[j]) + parseInt(split[j]);
+        }
+    }
+    for(var i = 0; i < 5; i++)
+    {
+        averageStats[i] = averageStats[i]/users;
+    }
+    fs.writeFileSync("./Stats/personalityStats.csv", "trait,percent\n");
+    fs.appendFileSync("./Stats/personalityStats.csv", "1," + averageStats[0] + "\n");
+    fs.appendFileSync("./Stats/personalityStats.csv", "2," + averageStats[1] + "\n");
+    fs.appendFileSync("./Stats/personalityStats.csv", "3," + averageStats[2] + "\n");
+    fs.appendFileSync("./Stats/personalityStats.csv", "4," + averageStats[3] + "\n");
+    fs.appendFileSync("./Stats/personalityStats.csv", "5," + averageStats[4] + "\n");
 }
 
 var clients = 0;
