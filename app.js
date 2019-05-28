@@ -15,7 +15,7 @@ setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
 setInterval(checkAuth, 360000);
 
-app.listen(800);
+app.listen(80);
 
 function handler (req, res) 
 {
