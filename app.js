@@ -17,7 +17,7 @@ setInterval(checkAuth, 360000);
 setInterval(updateCSV, 60000);
 setTimeout(updateCSV, 0);
 
-app.listen(800);
+app.listen(80);
 
 function handler (req, res) 
 {
