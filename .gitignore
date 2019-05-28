@@ -6,3 +6,5 @@ data.txt
 queue.txt
 sendAuth.txt
 update.txt
+build
+node_modules

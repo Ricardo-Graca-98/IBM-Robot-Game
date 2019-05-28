@@ -1,3 +1,0 @@
-Weapon 3
-80
-This weapon is bla bla bla

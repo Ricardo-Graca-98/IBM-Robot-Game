@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8"> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="/main.js"></script>
+    <title>IBM - NiceBots</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=PT+Sans+Narrow:700');
+        body
+        {  
+            font-family: 'PT Sans Narrow';
+        }
+        .bar 
+        {
+            fill: #B100FF;
+        }
+        .highlight 
+        {
+            fill: #E770FE;
+        }
+        #container
+        {
+            display: grid;
+            grid-gap: 20px;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            align-items: center;
+            justify-items: center;
+        }
+        .stats
+        {
+            border: 1px solid #B100FF;
+            padding: 10px;
+        }
+        #mainTitle
+        {
+            display: grid;
+            align-items: center;
+            justify-items: center;
+        }
+    </style>
+</head>
+<body>
+    <svg id="monthlyUsers" width="600" height="500"></svg>
+    <svg id="allUsers" width="600" height="500"></svg>
+    <svg id="personalityStats" width="500" height="400"></svg>
+    <h1 id="data">Last request sent - </h1>
+    <h1 id="mainTitle">Leaderboards</h1>
+    <div id="container">
+        <div>
+            <h2 style="color: #6100FF">Openness</h2>
+            <div class="stats">
+                <p id="OP1">1.</p>
+                <p id="OP2">2.</p>
+                <p id="OP3">3.</p>
+                <p id="OP4">4.</p>
+                <p id="OP5">5.</p>
+            </div>
+        </div>
+        
+        <div>
+            <h2 style="color: #8700FF">Conscientiousness</h2>
+            <div class="stats">
+                <p id="CO1">1.</p>
+                <p id="CO2">2.</p>
+                <p id="CO3">3.</p>
+                <p id="CO4">4.</p>
+                <p id="CO5">5.</p>
+            </div>
+        </div>
+        
+        <div>
+            <h2 style="color: #7500FF">Emotional Range</h2>
+            <div class="stats">
+                <p id="ER1">1.</p>
+                <p id="ER2">2.</p>
+                <p id="ER3">3.</p>
+                <p id="ER4">4.</p>
+                <p id="ER5">5.</p>
+            </div>
+        </div>
+        
+        <div>
+            <h2 style="color: #9B00FE">Extraversion</h2>
+            <div class="stats">
+                <p id="EX1">1.</p>
+                <p id="EX2">2.</p>
+                <p id="EX3">3.</p>
+                <p id="EX4">4.</p>
+                <p id="EX5">5.</p>
+            </div>
+        </div>
+        
+        <div>
+            <h2 style="color: #B100FF">Agreeableness</h2>
+            <div class="stats">
+                <p id="AG1">1.</p>
+                <p id="AG2">2.</p>
+                <p id="AG3">3.</p>
+                <p id="AG4">4.</p>
+                <p id="AG5">5.</p>
+            </div>
+        </div>
+        
+    </div>
+<script>
+    
+</script>
+</body>
+</html>
