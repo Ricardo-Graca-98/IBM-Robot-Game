@@ -14,8 +14,8 @@ setTimeout(checkUpdate, 0);
 setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
 setInterval(checkAuth, 360000);
-setInterval(updateCSV, 60000);
-setTimeout(updateCSV, 0);
+//setInterval(updateCSV, 60000);
+//setTimeout(updateCSV, 0);
 
 app.listen(80);
 
