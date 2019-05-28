@@ -14,7 +14,7 @@ setTimeout(checkUpdate, 0);
 setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
 setInterval(checkAuth, 360000);
-setInterval(updateCSV, 60000);
+setInterval(updateCSV, 60000); //Cause of the problem in case it crashes
 //setTimeout(updateCSV, 0);
 
 app.listen(80);
@@ -252,6 +252,38 @@ function runScript(scriptPath, callback) {
     });
 }
 
+function updateCSV()
+{
+    var averageStats = [0,0,0,0,0];
+    var users = 0;
+    fs.writeFileSync("debug.txt", "1");
+    var files = fs.readdirSync('./Users');
+    fs.appendFileSync("debug.txt", "2");
+    for(var i = 0; i < files.length; i++)
+    {
+        users++;
+        var readStats = fs.readFileSync("./Users/" + files[i] + "/stats.txt", "utf-8");
+        var split = readStats.split(" ");
+        for(var j = 0; j < averageStats.length; j++)
+        {
+            averageStats[j] = parseInt(averageStats[j]) + parseInt(split[j]);
+        }
+        fs.appendFileSync("debug.txt", "3");
+    }
+    for(var i = 0; i < 5; i++)
+    {
+        averageStats[i] = averageStats[i]/users;
+    }
+    fs.appendFileSync("debug.txt", "4");
+    fs.writeFileSync("./Stats/personalityStats.csv", "trait,percent\n");
+    fs.appendFileSync("./Stats/personalityStats.csv", "1," + averageStats[0] + "\n");
+    fs.appendFileSync("./Stats/personalityStats.csv", "2," + averageStats[1] + "\n");
+    fs.appendFileSync("./Stats/personalityStats.csv", "3," + averageStats[2] + "\n");
+    fs.appendFileSync("./Stats/personalityStats.csv", "4," + averageStats[3] + "\n");
+    fs.appendFileSync("./Stats/personalityStats.csv", "5," + averageStats[4] + "\n");
+    fs.appendFileSync("debug.txt", "5");
+}
+
 setInterval(socketUpdate, 500);
 
 var exportData = "";
@@ -277,33 +309,6 @@ function socketUpdate()
     extraversionArray = data.split("\n");
     data = fs.readFileSync("./Leaderboards/Agreeableness.txt", 'utf-8');
     agreeablenessArray = data.split("\n");
-}
-
-function updateCSV()
-{
-    var averageStats = [0,0,0,0,0];
-    var users = 0;
-    var files = fs.readdirSync('./Users');
-    for(var i = 0; i < files.length; i++)
-    {
-        users++;
-        var readStats = fs.readFileSync("./Users/" + files[i] + "/stats.txt", "utf-8");
-        var split = readStats.split(" ");
-        for(var j = 0; j < averageStats.length; j++)
-        {
-            averageStats[j] = parseInt(averageStats[j]) + parseInt(split[j]);
-        }
-    }
-    for(var i = 0; i < 5; i++)
-    {
-        averageStats[i] = averageStats[i]/users;
-    }
-    fs.writeFileSync("./Stats/personalityStats.csv", "trait,percent\n");
-    fs.appendFileSync("./Stats/personalityStats.csv", "1," + averageStats[0] + "\n");
-    fs.appendFileSync("./Stats/personalityStats.csv", "2," + averageStats[1] + "\n");
-    fs.appendFileSync("./Stats/personalityStats.csv", "3," + averageStats[2] + "\n");
-    fs.appendFileSync("./Stats/personalityStats.csv", "4," + averageStats[3] + "\n");
-    fs.appendFileSync("./Stats/personalityStats.csv", "5," + averageStats[4] + "\n");
 }
 
 var clients = 0;
