@@ -45,3 +45,7 @@ This is what steps we followed to reach where we are now:
 12. Created a script to update the users personality scores weekly.
 13. Created an authentication method using direct messages on Twitter
 14. **IN PROGRESS**
+
+---
+## **Unity Development**
+To see how this project is turning out in Unity check out this [link](https://imgur.com/a/cqhGaZr?third_party=1#_=_)!
