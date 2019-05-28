@@ -14,8 +14,8 @@ setTimeout(checkUpdate, 0);
 setInterval(checkUpdate, 86400000);
 setInterval(check, 100);
 setInterval(checkAuth, 360000);
-setInterval(updateCSV, 60000); //Cause of the problem in case it crashes
-setTimeout(updateCSV, 0);
+//setInterval(updateCSV, 60000); //Cause of the problem in case it crashes
+//setTimeout(updateCSV, 0);
 
 app.listen(80);
 
@@ -228,7 +228,8 @@ function check()
     }
 }
 
-function runScript(scriptPath, callback) {
+function runScript(scriptPath, callback) 
+{
 
     // keep track of whether callback has been invoked to prevent multiple invocations
     var invoked = false;

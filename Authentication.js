@@ -91,17 +91,14 @@ setTimeout(checkIfWorks, 0);
 
 function checkIfWorks()
 {
-  fs.writeFileSync("./debug.txt", "Starting to get tweets\n");
   client.get('direct_messages/events/list', function(error, msg, response) 
   {
     if(error)
     {
-      fs.appendFileSync("./debug.txt", error + "\n");
       console.log(error);
     }
     else
     {
-      fs.appendFileSync("./debug.txt", "Adding user\n");
       var confirmedUsers = new Array();
       for(var i = 0; i < msg.events.length; i++)
       {
@@ -127,7 +124,6 @@ function checkIfWorks()
 
 function linkUsersToID(ID, DELETE)
 {
-  fs.appendFileSync("./debug.txt", "Got here with " + DELETE + "\n");
   var files = fs.readdirSync('./Users');
   for(var i = 0; i < files.length; i++)
   {
