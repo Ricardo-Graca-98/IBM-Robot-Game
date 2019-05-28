@@ -17,7 +17,7 @@ setInterval(checkAuth, 360000);
 //setInterval(updateCSV, 60000); //Cause of the problem in case it crashes
 //setTimeout(updateCSV, 0);
 
-app.listen(5000);
+app.listen(80);
 
 function handler (req, res) 
 {
