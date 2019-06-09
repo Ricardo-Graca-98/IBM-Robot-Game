@@ -24,6 +24,7 @@ npm install rimraf
 npm install twit
 npm install socket.io
 npm install http
+npm install watson-developer-cloud
 ```
 
 Now to run it, head into your repository copy folder using the NodeJS terminal and run the command `node app.js`
