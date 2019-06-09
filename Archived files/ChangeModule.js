@@ -1,3 +1,5 @@
+/* Script used to test module changing coming from Unity */
+
 var fs = require('fs');
 
 setTimeout(changeModule, 0);

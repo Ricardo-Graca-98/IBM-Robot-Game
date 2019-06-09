@@ -6,16 +6,16 @@ function update()
 {
     var players = [];
     var counter = 0;
+    //Read all stats from all users in each folder
     fs.readdirSync('./Users/').forEach(file => 
     {
         var player = new Player(file);
         players.push(player);
-        var lvlCounter = 0;
         var target = './Users/' + file + '/stats.txt';
         var data = fs.readFileSync(target).toString();
         data = data.split(" ");
         console.log(data.length);
-        data.pop();
+        data.pop(); //removes the last element on the array
         players[counter].openness = data[0];
         players[counter].conscientiousness = data[1];
         players[counter].extraversion = data[2];
@@ -32,6 +32,7 @@ function update()
     setTimeout(function(){sort(players);}, 1000);
 }
 
+//Sort the data into leaderboards
 function sort (data)
 {
     console.log("Sorting data");
@@ -51,6 +52,7 @@ function sort (data)
         {
             switch(j)
                 {
+                    //Sort it for each personality stat
                     case 0:
                         for(var k = 0; k < array.length; k++)
                             {
@@ -113,56 +115,60 @@ function sort (data)
                 }
         }
         array.pop();
+        //Organize them into leaderboards
         switch(j)
-            {
-                case 0:
-                    bestOpenness = array;
-                    for(var i = 0; i < bestOpenness.length; i++)
-                        {
-                            bestOpenness[i] += (" [" + arrayOfNames[i] + "]");
-                        }
-                    break;
-                case 1:
-                    bestConscientiousness = array;
-                    for(var i = 0; i < bestConscientiousness.length; i++)
-                        {
-                            bestConscientiousness[i] += (" [" + arrayOfNames[i] + "]");
-                        }
-                    break;
-                case 2:
-                    bestExtraversion = array;
-                    for(var i = 0; i < bestExtraversion.length; i++)
-                        {
-                            bestExtraversion[i] += (" [" + arrayOfNames[i] + "]");
-                        }
-                    break;
-                case 3:
-                    bestAgreeableness = array;
-                    for(var i = 0; i < bestAgreeableness.length; i++)
-                        {
-                            bestAgreeableness[i] += (" [" + arrayOfNames[i] + "]");
-                        }
-                    break;
-                case 4:
-                    bestEmotionalRange = array;
-                    for(var i = 0; i < bestEmotionalRange.length; i++)
-                        {
-                            bestEmotionalRange[i] += (" [" + arrayOfNames[i] + "]");
-                        }
-                    break;
-                default:
+        {
+            case 0:
+                bestOpenness = array;
+                for(var i = 0; i < bestOpenness.length; i++)
+                    {
+                        bestOpenness[i] += (" [" + arrayOfNames[i] + "]");
+                    }
+                break;
+            case 1:
+                bestConscientiousness = array;
+                for(var i = 0; i < bestConscientiousness.length; i++)
+                    {
+                        bestConscientiousness[i] += (" [" + arrayOfNames[i] + "]");
+                    }
+                break;
+            case 2:
+                bestExtraversion = array;
+                for(var i = 0; i < bestExtraversion.length; i++)
+                    {
+                        bestExtraversion[i] += (" [" + arrayOfNames[i] + "]");
+                    }
+                break;
+            case 3:
+                bestAgreeableness = array;
+                for(var i = 0; i < bestAgreeableness.length; i++)
+                    {
+                        bestAgreeableness[i] += (" [" + arrayOfNames[i] + "]");
+                    }
+                break;
+            case 4:
+                bestEmotionalRange = array;
+                for(var i = 0; i < bestEmotionalRange.length; i++)
+                    {
+                        bestEmotionalRange[i] += (" [" + arrayOfNames[i] + "]");
+                    }
+                break;
+            default:
                     console.log("Switch broken!");
-                    break;
-            }
+                break;
+        }
         arrayOfNames = [];
         array = [0];
     }
+
+    //Save them to txt files
     fs.writeFileSync('./Leaderboards/Openness.txt', "");
     fs.writeFileSync('./Leaderboards/Conscientiousness.txt', "");
     fs.writeFileSync('./Leaderboards/EmotionalRange.txt', "");
     fs.writeFileSync('./Leaderboards/Extraversion.txt', "");
     fs.writeFileSync('./Leaderboards/Agreeableness.txt', "");
 
+    //Print them for debug purposes
     console.log("\nOpenness\n");
     for(var i = 0; i < bestOpenness.length; i++)
         {
@@ -195,6 +201,7 @@ function sort (data)
         }
 }
 
+//Player class
 function Player (name)
 {
     this.name = name;

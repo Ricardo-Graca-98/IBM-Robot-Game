@@ -1,3 +1,5 @@
+/* Testing script for receiving messages on twitter */
+
 var Twitter = require('twitter');
 var fs = require('fs');
 var Twit = require('twit');

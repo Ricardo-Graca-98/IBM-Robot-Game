@@ -1,3 +1,5 @@
+/* Test script to send emails for authentication instead of using twitter messages */
+
 var nodemailer = require('nodemailer');
 var fs = require('fs');
 

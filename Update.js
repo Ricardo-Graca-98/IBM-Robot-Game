@@ -3,6 +3,7 @@ var childProcess = require('child_process');
 
 setTimeout(update, 0);
 
+//Updates all existing users by adding them back into the add.txt file and calling for the createProfile script
 function update()
 {
     fs.readdir('./Users', (err, files) => 

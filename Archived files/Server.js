@@ -1,3 +1,5 @@
+/* First server script that was then reworked from the ground up to be more efficient */
+
 var http = require('http');
 var io = require('socket.io')(http);
 var fs = require('fs');

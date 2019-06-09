@@ -1,3 +1,5 @@
+/* First fighting script which doesn't really work as we intended */
+
 var fs = require('fs');
 
 var players = fs.readFileSync('queue.txt', 'utf8');

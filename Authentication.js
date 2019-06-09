@@ -1,11 +1,13 @@
+//All the nodes required to read and write files and communicate with twitter
 var Twitter = require('twitter');
 var fs = require('fs');
 var Twit = require('twit');
 
+//Get the keys for twitter
 var Credentials = fs.readFileSync('Keys.json', 'utf-8');
-var ParsedCredentials = JSON.parse(Credentials);
+var ParsedCredentials = JSON.parse(Credentials); //Parse them
 
-//Twitter authentication
+//Twit authentication
 var T = new Twit({
     consumer_key: ParsedCredentials.twitter[2].consumer_key,
     consumer_secret: ParsedCredentials.twitter[2].consumer_secret,
@@ -13,7 +15,7 @@ var T = new Twit({
     access_token_secret: ParsedCredentials.twitter[2].access_token_secret,
   })
 
-  //Authentication into Twitter
+//Authentication into Twitter
 var client = new Twitter
 ({
     consumer_key: ParsedCredentials.twitter[2].consumer_key,
@@ -22,21 +24,22 @@ var client = new Twitter
     access_token_secret: ParsedCredentials.twitter[2].access_token_secret
 });
 
+//Run the setup function
 setTimeout(setup, 0);
 
 function setup()
 {
-    var IDs = fs.readFileSync('sendAuth.txt', 'utf-8');
-    var parsedIDs = IDs.split(" ");
+    var IDs = fs.readFileSync('sendAuth.txt', 'utf-8'); //Read the auth file
+    var parsedIDs = IDs.split(" "); //Split the id's by spaces
     for(var i = 0; i < parsedIDs.length; i++)
     {
       console.log(parsedIDs);
-      setTimeout(sendMessage, 0, parsedIDs[i]);
+      setTimeout(sendMessage, 0, parsedIDs[i]); //Send messages for each ID
     }
-    fs.writeFileSync("sendAuth.txt", "");
+    fs.writeFileSync("sendAuth.txt", ""); //Clear the id file
 }
 
-function sendMessage(ID)
+function sendMessage(ID) //Template to send messages on twitter, the only thing that changes is the recipient ID
 {
   var replyTo = 
   {
@@ -74,7 +77,7 @@ function sendMessage(ID)
     }
   }
 
-  T.post('direct_messages/events/new', replyTo, function(err,data,response)
+  T.post('direct_messages/events/new', replyTo, function(err,data,response) //Send new message
   {
       if(err)
       {
@@ -87,9 +90,9 @@ function sendMessage(ID)
   });
 }
 
-setTimeout(checkIfWorks, 0);
+setTimeout(getMessages, 0); //Get messages from users
 
-function checkIfWorks()
+function getMessages()
 {
   client.get('direct_messages/events/list', function(error, msg, response) 
   {
@@ -99,19 +102,18 @@ function checkIfWorks()
     }
     else
     {
-      var confirmedUsers = new Array();
-      for(var i = 0; i < msg.events.length; i++)
+      for(var i = 0; i < msg.events.length; i++) //loop through messages
       {
-        var senderText = msg.events[i].message_create.message_data.text;
-        var senderID = msg.events[i].message_create.sender_id;
+        var senderText = msg.events[i].message_create.message_data.text; //get text
+        var senderID = msg.events[i].message_create.sender_id; //get id
 
-        if(senderText == "Yes" || senderText == "yes")
+        if(senderText == "Yes" || senderText == "yes") //if confirmed then change his status to confirmed
         {
           console.log(senderID + " sent: " + senderText);
           linkUsersToID(senderID, 0);
           console.log(senderID + " is being confirmed!");
         }
-        else if(senderText == "No" || senderText == "no")
+        else if(senderText == "No" || senderText == "no") //if not confirmed then delete his account
         {
           console.log(senderID + " sent: " + senderText);
           linkUsersToID(senderID, 1);
@@ -122,25 +124,25 @@ function checkIfWorks()
   });
 }
 
-function linkUsersToID(ID, DELETE)
+function linkUsersToID(ID, DELETE) //check if it authenticates the user or deletes it
 {
   var files = fs.readdirSync('./Users');
   for(var i = 0; i < files.length; i++)
   {
-    if(ID == fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'))
+    if(ID == fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8')) 
     {
       console.log(ID + " = " + fs.readFileSync('./Users/' + files[i] + '/twitterID.txt', 'utf-8'));
-      if(DELETE == 1)
+      if(DELETE == 1) //Delete user
       {
         console.log("Deleted!");
         rimraf.sync('./Users/' + files[i]);
       }
-      else
+      else //Confirm user
       {
         console.log("Confirmed!");
         fs.writeFileSync('./Users/' + files[i] + '/auth.txt', "1");
       }
     }
   }
-  fs.appendFileSync("./debug.txt", "Done!\n");
+  fs.appendFileSync("./debug.txt", "Done!\n"); //Debugging 
 }

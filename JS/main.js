@@ -1,16 +1,22 @@
+//Timeouts for functions
 setTimeout(monthlyUsers, 100);
 setTimeout(allUsers, 250);
 setTimeout(personalityStats, 500);
 
+//First IP is my public IP where the server is running
+//Second IP is for local network tests
 var socket = io('http://2.24.190.83:80');
-//var socket = io('http://localhost:800');
+//var socket = io('http://localhost:80');
+
 
 socket.on('data', function (data)
 {
+    //Get sockets for the real time requests
     $('#data').text("Last request sent - " + data["text"]);
     console.log(data["text"]);
 });
 
+//Get sockets for all the leaderboards
 socket.on('opennessData', function (data)
 {
     $('#OP1').text("1º - " + data["a"]);
@@ -56,9 +62,11 @@ socket.on('agreeablenessData', function (data)
     $('#AG5').text("5º - " + data["e"]);
 });
 
+//Monthly users chart
 function monthlyUsers()
 {
-    var svg = d3.select("#monthlyUsers"),
+    var svg = d3.select("#monthlyUsers"), //Create an svg using d3
+    //Give it all the attributes needed
     margin = 200,
     width = svg.attr("width") - margin,
     height = svg.attr("height") - margin;
@@ -104,8 +112,8 @@ function monthlyUsers()
          .data(data)
          .enter().append("rect")
          .attr("class", "bar")
-         .on("mouseover", onMouseOver) //Add listener for the mouseover event
-         .on("mouseout", onMouseOut)   //Add listener for the mouseout event
+         .on("mouseover", onMouseOver) //Add listener for the mouseover event for animations
+         .on("mouseout", onMouseOut)   //Add listener for the mouseout event for animations
          .attr("x", function(d) { return x(d.month); })
          .attr("y", function(d) { return y(d.users); })
          .attr("width", x.bandwidth())
@@ -159,6 +167,8 @@ function monthlyUsers()
     }
 }
 
+
+//Chart for allUsers
 function allUsers()
 {
         var svg = d3.select("#allUsers"),
@@ -183,7 +193,7 @@ function allUsers()
         y.domain([0, d3.max(data, function(d) { return d.users; })]);
         if(isNaN(x))
         {
-            console.log("Its not a number!!");
+            console.log("Its not a number!!"); //debugging
         }
         g.append("g")
          .attr("transform", "translate(0," + height + ")")
@@ -258,6 +268,8 @@ function allUsers()
           .remove()
     }
 }
+
+//Personality colour wheel
 function personalityStats()
 {
     var svg = d3.select("#personalityStats"),

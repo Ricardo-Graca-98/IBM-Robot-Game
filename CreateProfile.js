@@ -3,6 +3,7 @@ var Twitter = require('twitter');
 var fs = require('fs');
 var rimraf = require("rimraf");
 
+//Variables
 var text = "";
 var completed = false;
 var ID = "default";
@@ -12,6 +13,7 @@ var addList = new Array();
 var lvlPerPercentile = 0.05;
 var addFile = fs.readFileSync('add.txt', 'utf8');
 
+//Keys for authentication
 var Credentials = fs.readFileSync('Keys.json', 'utf-8');
 var ParsedCredentials = JSON.parse(Credentials);
 
@@ -35,6 +37,7 @@ var personalityInsights = new PersonalityInsightsV3
     url: ParsedCredentials.ibm[0].url,
 });
 
+//Add a user to the database
 function addUser()
 {
     var newUser = false;
@@ -44,6 +47,7 @@ function addUser()
     //Get tweets from user timeline
     client.get('statuses/user_timeline', {screen_name: ID, count: '1000', include_rts: 'false'} , function(error, tweets, response)
     {
+        //Check if the user already exists in the database
         if(!fs.existsSync('./Users/' + ID + '/auth.txt'))
         {
             newUser = true;
@@ -87,12 +91,15 @@ function addUser()
             }
         }
         outputText += "]}";
+
+        //If there isn't a folder for this user yet then create one
         if (!fs.existsSync('./Users/' + ID))
         {
             fs.mkdirSync('./Users/' + ID);
         }
         fs.writeFileSync('./Users/' + ID + '/profile.json', outputText);
 
+        //Create all the required files for new users
         if(newUser)
         {
             fs.writeFileSync('./Users/' + ID + '/auth.txt', 0);
@@ -102,6 +109,7 @@ function addUser()
             fs.mkdirSync('./Users/' + ID + '/Fights');
         }
 
+        //Prepare a request for the watson ai
         var profileParams = {
             
             // Get the content from the JSON file.
@@ -113,7 +121,7 @@ function addUser()
         //Gets the information from the Personality Insight tool belonging to the Watson AI
         personalityInsights.profile(profileParams, function(error, profile) 
         {
-            if (error) 
+            if (error) //If there's an error we delete the whole account
             {
                 console.log("FAILED! Error code - " + error.code);
                 console.log("Aborting...");
@@ -121,7 +129,7 @@ function addUser()
                 console.log("Aborted!");
                 completed = true;
             } 
-            else 
+            else //If everything works out well we take the big 5 traits and adjust them from 0-1 to 1-20
             { 
                 var filtered = "";
                 if (fs.existsSync('./Users/' + ID + '/stats.txt'))
@@ -149,6 +157,7 @@ function addUser()
     })
 }
 
+//Check if all users have been created
 function checkCompletion()
 {
     if(completed)
@@ -165,6 +174,7 @@ function checkCompletion()
     }
 }
 
+//Getting the names to add to the database
 function processText()
 {
     console.log("Adding to the database...");
@@ -185,6 +195,7 @@ function processText()
     setTimeout(addUser, 0);
 }
 
+//Getting dates
 Date.prototype.getUnixTime = function() {return this.getTime()/1000|0};
 if(!Date.now) Date.now = function() { return new Date(); }
 Date.time = function() { return Date.now().getUnixTime(); }

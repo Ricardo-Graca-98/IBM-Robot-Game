@@ -2,27 +2,27 @@
 <html>
 <head>
     <meta charset="UTF-8"> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="/JS/main.js"></script>
-    <title>IBM - NiceBots</title>
-    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=PT+Sans+Narrow:700');
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> <!--Gets JQuery online-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> <!--Gets Socket.IO online-->
+    <script src="https://d3js.org/d3.v4.min.js"></script> <!--Gets D3 online-->
+    <script src="/JS/main.js"></script> <!--Gets main script from local folder-->
+    <title>IBM - NiceBots</title> <!--Sets title-->
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/> <!--Gets favicon-->
+    <style> 
+        @import url('https://fonts.googleapis.com/css?family=PT+Sans+Narrow:700'); /*Gets an online font*/
         body
         {  
-            font-family: 'PT Sans Narrow';
+            font-family: 'PT Sans Narrow'; /*Sets the font*/
         }
         .bar 
         {
-            fill: #B100FF;
+            fill: #B100FF; /*Sets the bars colours*/
         }
         .highlight 
         {
-            fill: #E770FE;
+            fill: #E770FE; /*Sets the bars colours when highlighted*/
         }
-        #container
+        #container /*Organizes the leaderboards in a container*/
         {
             display: grid;
             grid-gap: 20px;
@@ -31,12 +31,12 @@
             align-items: center;
             justify-items: center;
         }
-        .stats
+        .stats /*Gives the leaderboards a border and some padding*/
         {
             border: 1px solid #B100FF;
             padding: 10px;
         }
-        #mainTitle
+        #mainTitle /*Styles main title to be centered*/
         {
             display: grid;
             align-items: center;
@@ -45,13 +45,13 @@
     </style>
 </head>
 <body>
-    <h1>NiceBots!</h1>
-    <svg id="monthlyUsers" width="600" height="500"></svg>
-    <svg id="allUsers" width="600" height="500"></svg>
-    <svg id="personalityStats" width="500" height="400"></svg>
-    <h1 id="data">Last request sent - </h1>
-    <h1 id="mainTitle">Leaderboards</h1>
-    <div id="container">
+    <h1>NiceBots!</h1> <!--Creates a header-->
+    <svg id="monthlyUsers" width="600" height="500"></svg> <!--Creates a svg to draw the graphs-->
+    <svg id="allUsers" width="600" height="500"></svg> <!--Creates a svg to draw the graphs-->
+    <svg id="personalityStats" width="500" height="400"></svg> <!--Creates a svg to draw the graphs-->
+    <h1 id="data">Last request sent - </h1> <!--Another header that takes the live requests-->
+    <h1 id="mainTitle">Leaderboards</h1> <!--Header for the leaderboards-->
+    <div id="container"> <!--Container with all the leaderboards coming from sockets-->
         <div>
             <h2 style="color: #6100FF">Openness</h2>
             <div class="stats">
