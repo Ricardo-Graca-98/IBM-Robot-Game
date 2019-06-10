@@ -18,6 +18,7 @@ setTimeout(checkUpdate, 0);//Check if the server needs to update the users as so
 setInterval(checkUpdate, 86400000); //Check every 7 days if the server needs an update to the users
 setInterval(check, 100); //Check if a new user can be created every 100ms
 setInterval(checkAuth, 360000); //Check for authorization requests on twitter every 5 minutes
+setInterval(socketUpdate, 500); //Update the sockets every 500ms
 //setInterval(updateCSV, 60000); //Cause of the problem in case it crashes
 //setTimeout(updateCSV, 0);
 
@@ -307,8 +308,6 @@ function updateCSV()
     fs.appendFileSync("./Stats/personalityStats.csv", "5," + averageStats[4] + "\n");
     fs.appendFileSync("debug.txt", "5"); //Debugging
 }
-
-setInterval(socketUpdate, 500); //Update the sockets every 500ms
 
 //Variables for sockets
 var exportData = "";
